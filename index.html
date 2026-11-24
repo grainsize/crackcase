@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>재료 탐정 시즌 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:"Pretendard";font-weight:45 920;font-display:swap;src:url(fonts/PretendardVariable.woff2) format("woff2-variations")}
+/* 레이아웃: 위에 표제와 이어하기, 아래에 사건 파일 카드 격자. 배경에는 천천히 번지는 균열 */
+:root{
+  --bg:#0b1014; --panel:rgba(16,22,28,.86); --ink:#f1ece2; --muted:#a9b0b2; --line:rgba(241,236,226,.16);
+  --brass:#e2b257; --blue:#8fc0ea; --good:#7fd3a0;
+  --display:"Noto Serif KR","Pretendard",serif; --body:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.6}
+canvas#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:44px 20px 60px}
+h1,h2,h3{font-family:var(--display);font-weight:900;margin:0;line-height:1.2;text-wrap:balance}
+.eb{font-size:.8rem;letter-spacing:.1em;color:var(--brass);font-weight:600}
+header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end}
+header h1{font-size:clamp(2.4rem,6vw,4rem);margin:6px 0 10px}
+header p{margin:0;max-width:60ch;color:var(--muted)}
+.cta{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.btn{display:inline-block;font:inherit;font-weight:700;text-decoration:none;cursor:pointer;border-radius:4px;border:1px solid var(--brass);background:var(--brass);color:#1b1408;padding:11px 22px}
+.btn.ghost{background:transparent;color:var(--brass)}
+.btn:hover{filter:brightness(1.1)}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.stat{font-size:.88rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.stat b{color:var(--ink)}
+@media (max-width:760px){header{grid-template-columns:minmax(0,1fr)}.cta{align-items:flex-start}}
+.sec{margin-top:40px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:8px}
+.sec h2{font-size:1.25rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-top:18px}
+.case{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:inherit;backdrop-filter:blur(4px)}
+a.case:hover{border-color:var(--brass);transform:translateY(-2px)}
+a.case{transition:transform .15s,border-color .15s}
+.thumb{aspect-ratio:16/8;background:#11181d center/cover no-repeat;position:relative}
+.thumb .no{position:absolute;left:12px;top:10px;font-family:var(--display);font-weight:900;font-size:1.6rem;color:var(--ink);text-shadow:0 2px 8px rgba(0,0,0,.7)}
+.body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:4px;flex:1}
+.body h3{font-size:1.08rem}
+.meta{font-size:.8rem;color:var(--muted)}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px}
+.tag{font-size:.72rem;padding:1px 8px;border-radius:99px;border:1px solid var(--line);color:var(--muted)}
+.tag.k{border-color:var(--blue);color:var(--blue)}
+.state{position:absolute;right:10px;top:10px;font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:99px;background:rgba(10,14,18,.8);border:1px solid var(--line)}
+.state.new{color:var(--brass);border-color:var(--brass)}
+.state.done{color:var(--good);border-color:var(--good)}
+.locked{opacity:.55}
+.locked .thumb{background:repeating-linear-gradient(135deg,#141b20 0 10px,#11171b 10px 20px)}
+.locked .thumb .lock{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:.85rem}
+footer{margin-top:44px;font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+footer p{margin:4px 0}
+@media (prefers-reduced-motion:reduce){a.case{transition:none}}
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eb">성효경TV · 시즌 1</div>
+      <h1>재료 탐정</h1>
+      <p>부서진 것에는 이유가 있습니다. 역사 속 사고 현장에 조사관으로 들어가 사람들을 만나고, 파단면을 들여다보고, 한정된 조사 점수로 원인을 밝혀내세요. 피로, 취성 파괴, 응력 부식 균열까지 사건 하나에 재료 개념 하나씩 배웁니다.</p>
+    </div>
+    <div class="cta">
+      <a class="btn" id="cont" href="ch1.html">1화부터 시작</a>
+      <div class="stat" id="stat"></div>
+    </div>
+  </header>
+
+  <div class="sec"><h2>사건 파일</h2><span class="stat">키보드와 마우스 권장 · 터치 조작 지원</span></div>
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    <p>사건 경위와 해설의 주요 사실은 공개 자료에 근거하며, 대사와 일부 시험 값은 게임을 위해 재구성했습니다. 각 사건의 판정 화면에 출처와 재구성 범위를 적었습니다.</p>
+    <p>엔진 three.js · 인물과 소품 3D 모델 Quaternius (CC0) · 글꼴 Noto Serif KR, Pretendard (SIL Open Font License 1.1)</p>
+  </footer>
+</div>
+<script>
+const CASES=[
+ ['베르사유의 차축','1842 · 프랑스 뫼동','피로','c1.jpg','ch1.html'],
+ ['두 동강 난 리버티선','1943 · 미국 조선소','저온 취성','c2.jpg','ch2.html'],
+ ['타이타닉의 이음매','1912 · 북대서양','리벳과 저온 취성','c3.jpg','ch3.html'],
+ ['보스턴 당밀 탱크','1919 · 미국 보스턴','응력집중'],['코멧 여객기','1954 · 지중해','여압 피로'],['F-111','1969 · 미국','초기 결함'],
+ ['실버 브리지','1967 · 미국 오하이오강','응력 부식 균열'],['성수대교','1994 · 서울','용접 결함과 피로'],['ICE 에셰데','1998 · 독일','내부 균열'],
+ ['알로하 243편','1988 · 하와이','다발 피로 균열'],['우스터 수영장','1985 · 스위스','염화물 응력 부식'],['베이 브리지 앵커 로드','2013 · 샌프란시스코','수소 취성'],
+ ['알렉산더 키엘란','1980 · 북해','부착물 용접부 피로'],['JAL 123편','1985 · 일본','수리 불량과 피로'],['콩코드','2000 · 파리','외부 이물질 연쇄 파손']];
+const get=k=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } };
+const rank=s=>s>=90?'수석 조사관':s>=60?'조사관':'수습 조사관';
+let cleared=0, total=0, next=null;
+document.getElementById('grid').innerHTML=CASES.map((c,i)=>{ const n=i+1, nn=String(n).padStart(2,'0');
+  if(!c[4]) return `<div class="case locked" aria-label="사건 ${nn} ${c[0]}, 제작 중"><div class="thumb"><span class="no">${nn}</span><div class="lock">제작 중</div></div><div class="body"><h3>${c[0]}</h3><div class="meta">${c[1]}</div><div class="tags"><span class="tag">${c[2]}</span></div></div></div>`;
+  const sc=+get('mt-score-'+n)||0, done=get('mt-done-'+n)==='1'; if(done){ cleared++; total+=sc; } else if(!next) next=c[4];
+  return `<a class="case" href="${c[4]}"><div class="thumb" style="background-image:url(img/${c[3]})"><span class="no">${nn}</span><span class="state ${done?'done':'new'}">${done?sc+'점 · '+rank(sc):'플레이 가능'}</span></div><div class="body"><h3>${c[0]}</h3><div class="meta">${c[1]}</div><div class="tags"><span class="tag k">${c[2]}</span></div></div></a>`; }).join('');
+const cont=document.getElementById('cont');
+if(cleared>0){ cont.href=next||'ch1.html'; cont.textContent=next?'다음 사건 이어하기':'처음부터 다시 풀기'; }
+document.getElementById('stat').innerHTML=`해결한 사건 <b>${cleared}</b> / 3 · 총점 <b>${total}</b>`;
+
+/* 배경: 천천히 번지는 취성 균열 */
+const cv=document.getElementById('bg'), cx=cv.getContext('2d'); let W,H,tips=[],dpr=Math.min(devicePixelRatio,2);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function size(){ W=cv.width=innerWidth*dpr; H=cv.height=innerHeight*dpr; cx.fillStyle='#0b1014'; cx.fillRect(0,0,W,H); tips=[]; for(let i=0;i<5;i++) seed(); }
+function seed(){ const e=Math.random()*4|0, x=e===0?0:e===1?W:Math.random()*W, y=e===2?0:e===3?H:Math.random()*H; tips.push({x,y,a:Math.atan2(H/2-y,W/2-x)+(Math.random()-.5),w:2.2*dpr,life:400+Math.random()*500}); }
+function step(){ const nt=[]; for(const t of tips){ if(t.life--<=0||t.w<.3) continue; const nx=t.x+Math.cos(t.a)*2*dpr, ny=t.y+Math.sin(t.a)*2*dpr;
+    cx.strokeStyle=`rgba(226,178,87,${Math.min(.5,t.w*.18)})`; cx.lineWidth=t.w; cx.beginPath(); cx.moveTo(t.x,t.y); cx.lineTo(nx,ny); cx.stroke();
+    t.x=nx; t.y=ny; t.a+=(Math.random()-.5)*.5; t.w*=.9985; nt.push(t); if(Math.random()<.012&&nt.length<60) nt.push({x:t.x,y:t.y,a:t.a+(Math.random()<.5?-1:1)*(.4+Math.random()*.5),w:t.w*.6,life:t.life*.6}); }
+  tips=nt; if(tips.length<3) seed(); cx.fillStyle='rgba(11,16,20,.012)'; cx.fillRect(0,0,W,H); }
+addEventListener('resize',size); size();
+if(reduce){ for(let i=0;i<900;i++) step(); } else (function loop(){ for(let i=0;i<3;i++) step(); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>
