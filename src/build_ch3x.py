@@ -41,5 +41,6 @@ for bad in['shedRoof','shedOpen','crankAxle','lensGlint','inShed']: assert bad n
 i=s.index('  /* 표식, 안내 */'); j=s.index("  if(composer) composer.render();",i); s=s[:i]+LOOP+s[j:]
 for bad in ['ACTS','BUDGET','showAct(','done.has(','left -=','REPORT','showReport']:
     assert bad not in s, bad
+exec(open('/home/claude/patch_cam.py',encoding='utf-8').read())
 open('/home/claude/season/ch3.html','w',encoding='utf-8').write(s)
 print('ok',len(s))

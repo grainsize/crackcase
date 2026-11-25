@@ -83,7 +83,7 @@ function crankGame(){
     requestAnimationFrame(f); };
   $('cQ').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; if(b.dataset.a==='1'){ closeModal(); flags.crank=true; give('crank'); } else penalty(10,'다시 돌려 보며 바늘을 보세요. (10초 줄어듦)'); }; }
 /* 최종 자물쇠 */
-const FINAL=[['원인',['진동 때문에 쇠가 결정질로 변했다','과속으로 한 번에 큰 힘이 걸렸다','처음부터 불량한 쇠였다','반복되는 하중으로 균열이 조금씩 자랐다'],3],
+const FINAL=[['원인',['진동 때문에 쇠가 결정화됐다','과속으로 한 번에 큰 힘이 걸렸다','처음부터 불량한 쇠였다','반복되는 하중으로 균열이 조금씩 자랐다'],3],
  ['시작점',['차축 중심부의 내부 결함','저널 어깨 모서리의 표면','두 바퀴 사이 한가운데 표면'],1],
  ['대책',['더 단단한 쇠로 바꾼다','속도를 절반으로 줄인다','모서리를 둥글게 깎고, 달린 거리를 적어 정해진 때 바꾼다'],2]];
 function finalLock(){
@@ -100,7 +100,7 @@ function verdict(){
     <div class="fb"><b>원인 · 피로</b><br>매끈한 면의 줄무늬는 균열이 오랜 시간 조금씩 자란 흔적이고, 거친 면은 남은 단면이 버티지 못해 한 번에 끊어진 자리입니다.</div>
     <div class="fb"><b>시작점 · 저널 어깨 모서리</b><br>지름이 갑자기 바뀌는 모서리에는 응력이 몰립니다. 회전 굽힘에서는 표면 응력이 가장 크므로 균열은 표면에서 시작해 안으로 자랍니다.</div>
     <div class="fb"><b>대책 · 둥근 모서리와 수명 관리</b><br>모서리를 둥글게 하면 응력집중이 줄고, 달린 거리를 관리하면 균열이 위험한 크기로 자라기 전에 바꿀 수 있습니다.</div>
-    <h3 style="margin-top:16px">실제로는 어떻게 되었나</h3><p>당시에는 금속 피로라는 개념이 없었습니다. 많은 기술자가 진동이 쇠를 결정질로 바꾼다고 믿었습니다. 1843년 윌리엄 랭킨은 균열이 저널 목 둘레의 미세한 틈에서 시작해 중심으로 서서히 파고든다고 설명하고, 어깨를 큰 곡선으로 만들라고 제안했습니다.</p><p>프랑스 정부 조사위원회는 차축 수명을 시험으로 정하고 사용 거리를 관리해 교체하라고 권고했습니다. 승객을 객실에 가두는 관행도 사라졌습니다. 1856년부터 1870년까지 아우구스트 뵐러의 차축 시험에서 오늘날의 S-N 곡선이 나왔습니다.</p>
+    <h3 style="margin-top:16px">실제로는 어떻게 되었나</h3><p>당시에는 금속 피로라는 개념이 없었습니다. 많은 기술자가 진동이 쇠를 \'결정화\'시킨다고 믿었습니다. 그러나 쇠를 비롯한 금속은 처음부터 작은 결정립이 모인 결정질입니다. 부러진 면이 반짝인 것은 마지막에 한꺼번에 끊어진 자리에서 결정면이 드러났기 때문이고, 쇠의 구조가 바뀐 것이 아닙니다. 1843년 윌리엄 랭킨은 균열이 저널 목 둘레의 미세한 틈에서 시작해 중심으로 서서히 파고든다고 설명하고, 어깨를 큰 곡선으로 만들라고 제안했습니다.</p><p>프랑스 정부 조사위원회는 차축 수명을 시험으로 정하고 사용 거리를 관리해 교체하라고 권고했습니다. 승객을 객실에 가두는 관행도 사라졌습니다. 1856년부터 1870년까지 아우구스트 뵐러의 차축 시험에서 오늘날의 S-N 곡선이 나왔습니다.</p>
     <p class="src"><span class="tag" style="margin:0 6px 0 0">재구성</span>자물쇠, 소지품, 대사, 운행 장부와 의견서의 내용은 게임을 위해 만든 것입니다. 자료: <a href="https://en.wikipedia.org/wiki/Versailles_rail_accident">Wikipedia, Versailles rail accident</a> · Rankine (1843), Minutes of the Institution of Civil Engineers · Sendeckyj (2006)</p>
     <div class="row"><a class="btnlink" href="ch2.html">다음 사건</a><a class="btnlink ghost" href="index.html">사건 목록</a><button id="again" type="button" class="ghost">처음부터 다시</button></div>`);
   $('again').onclick=()=>location.reload(); }
