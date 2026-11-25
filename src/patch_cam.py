@@ -31,3 +31,17 @@ s=s.replace("이동 WASD · 달리기 Shift","W/S 전진·후진 · A/D 방향 �
 s=s.replace("WASD나 방향키로 이동, Shift 달리기","W(↑) 전진, S(↓) 후진, A·D(←·→)로 방향 돌리기, Shift 달리기")
 s=s.replace("<b>시점</b>: 화면을 드래그하면 돌아가고 휠로 거리를 조절합니다.","<b>시점</b>: 카메라가 등 뒤에서 따라갑니다. 화면을 드래그하면 둘러볼 수 있고, 다시 움직이면 정면으로 돌아옵니다. 휠로 거리를 조절합니다.")
 s=s.replace("왼쪽 아래 스틱으로 이동","왼쪽 아래 스틱을 위아래로 밀어 전진·후진, 좌우로 밀어 방향 돌리기")
+
+# 1인칭 시점 전환 (V 키, 1인칭 버튼)
+_rep("camYaw -= (e.clientX-drag.x)*.006; lastDrag=performance.now();","if(fp) player.yaw -= (e.clientX-drag.x)*.006; else camYaw -= (e.clientX-drag.x)*.006; lastDrag=performance.now();")
+_rep("if(e.code==='KeyN') showNote();","if(e.code==='KeyN') showNote(); if(e.code==='KeyV') toggleView();")
+_rep('<button class="ghost" id="bHelp" type="button">','<button class="ghost" id="bView" type="button" aria-pressed="false">1인칭</button>\n  <button class="ghost" id="bHelp" type="button">')
+_rep("  else if(started){ ","  else if(started&&fp){ const fpp=Math.max(-.9,Math.min(.6,(.2-camPitch)*1.4)), sy=Math.sin(player.yaw), cy=Math.cos(player.yaw);\n    camPos.set(player.pos.x+sy*.18, player.pos.y+1.62, player.pos.z+cy*.18); look.set(camPos.x+sy*Math.cos(fpp)*4, camPos.y+Math.sin(fpp)*4, camPos.z+cy*Math.cos(fpp)*4); player.g.visible=false; }\n  else if(started){ if(!player.g.visible) player.g.visible=true; ")
+OCC2=r"""
+let fp=false;
+function toggleView(){ fp=!fp; if(!fp){ player.g.visible=true; camYaw=player.yaw+Math.PI; } camPitch=.2; const b=$('bView'); if(b){ b.textContent=fp?'3인칭':'1인칭'; b.setAttribute('aria-pressed',fp); } }
+$('bView').onclick=()=>{ toggleView(); $('gl').focus(); };
+"""
+_rep("/* 카메라 가림 방지:",OCC2+"/* 카메라 가림 방지:")
+s=s.replace("W/S 전진·후진 · A/D 방향 · 달리기 Shift","W/S 전진·후진 · A/D 방향 · V 1인칭 · 달리기 Shift")
+s=s.replace("휠로 거리를 조절합니다.","휠로 거리를 조절합니다. V 키나 오른쪽 위 1인칭 버튼으로 주인공 눈높이 시점으로 바꿀 수 있습니다.")
