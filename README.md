@@ -17,3 +17,11 @@
 - 3D 모델: Quaternius (CC0)
 - 글꼴: Noto Serif KR, Pretendard (SIL Open Font License 1.1)
 - 사건 해설의 출처와 재구성 범위는 각 사건의 판정 화면에 적혀 있습니다.
+
+## Firebase Hosting 배포 (material-detective.web.app)
+```
+cd material-detective
+firebase login                                   # 처음 한 번만
+firebase projects:create material-detective      # 이름이 이미 쓰이면 material-detective-sung 처럼 바꿔서
+firebase deploy --only hosting --project material-detective
+```
