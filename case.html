@@ -78,6 +78,7 @@ const isDone=n=>get('mt-done-'+n)==='1';
 const isOpen=n=>n===1||isDone(n-1);
 
 const n=Math.min(15,Math.max(4,parseInt(new URLSearchParams(location.search).get('n'))||4)), c=CASES[n-1], nn=String(n).padStart(2,'0');
+if(!isOpen(n)) location.replace('index.html#locked-'+n);
 document.title='재료 탐정 '+n+'화 '+c[0];
 document.getElementById('art').style.backgroundImage=`url(img/${c[3]})`;
 document.getElementById('eb').textContent='재료 탐정 · 사건 '+nn;
