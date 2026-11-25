@@ -7,7 +7,7 @@ const ITEMS = {
   torch:{n:'손전등', d:'시험소 기사의 손전등. 새벽 어둠과 서리 속에서도 파단면을 비출 수 있다.'},
   weather:{n:'기상 기록', d:'밤사이 기온이 계속 내려가 새벽 5시 무렵 영하 3도로 가장 추웠다. 전날 낮에는 영상 8도였다. 강물은 4도 안팎.', recon:true},
   path:{n:'균열 경로', d:'균열은 3번 화물창 사각 모서리에서 출발해 갑판을 가로지르고, 양쪽 옆판을 타고 내려가 바닥판 앞에서 멈췄다. 용접선을 따라가지 않고 강판 한가운데를 가로질렀다.'},
-  weld:{n:'용접부 메모', d:'용접 비드에 기공과 언더컷이 몇 군데 있다. 그러나 균열은 용접부에서 시작하지 않았고, 용접 이음을 만나도 멈추지 않고 건너갔다.'},
+  weld:{n:'용접부 메모', d:'용접 비드에 기공과 언더컷이 몇 군데 있다. 이 배의 균열은 용접부에서 시작하지 않았지만, 용접 이음을 만나도 멈추지 않고 건너갔다. 다른 배들에서는 이런 결함이 균열의 시작점이 되기도 했다.'},
   sketch:{n:'파단면 스케치', d:'V자 무늬의 꼭짓점이 모두 한쪽 끝, 3번 화물창 모서리 쪽을 가리킨다. 면은 평평하게 반짝이고 휜 흔적이 없다. 강판이 늘어나지 않고 단번에 깨졌다.'},
   charpy:{n:'충격 시험 결과', d:'같은 강재가 영상 20도 이상에서는 크게 휘며 충격을 흡수했다. 영상 10도 아래로 내려가자 흡수 에너지가 급격히 줄었고, 0도 아래에서는 휘지 않고 반짝이는 면을 남기며 두 동강 났다.', recon:true},
   tensile:{n:'인장 시험 결과', d:'상온에서 매끈한 봉 시편을 당기면 강도도 늘어남도 정상이다. 이 시험만으로는 강재의 문제가 드러나지 않는다.', recon:true},
@@ -83,9 +83,9 @@ const cpE=t=>{ for(let i=1;i<CP.length;i++) if(t<=CP[i][0]){ const [a,ea]=CP[i-1
 const CPT=[-30,-20,-10,-3,0,10,20,30];
 function charpyGame(){
   let ti=6, busy=false; const done=new Map();
-  const look=e=>e<12?'휘지 않고 두 동강. 면이 평평하게 반짝인다.':e<30?'조금 휘다가 깨졌다. 반짝이는 면과 회색 섬유질이 섞여 있다.':'크게 휘어 V자로 접혔다. 끝까지 갈라지지 않았다. 면은 회색 섬유질.';
+  const look=e=>e<12?'휘지 않고 두 동강. 면이 평평하게 반짝인다.':e<30?'조금 휘다가 깨졌다. 반짝이는 면과 회색 섬유질이 섞여 있다.':'크게 휘며 끊어졌다. 면은 회색 섬유질이고 가장자리가 비스듬히 늘어났다.';
   const table=()=>[...done.entries()].sort((a,b)=>a[0]-b[0]).map(([t,e])=>`<tr><td>${t>0?'+':''}${t}°C</td><td>${Math.round(e)} J</td><td>${look(e)}</td></tr>`).join('');
-  openModal(`<div class="eb">시험소</div><h2>진자 충격 시험기<span class="tag">재구성</span></h2><p>선체에서 떼어 낸 강재에 홈(노치)을 낸 작은 시편이다. 얼음물이나 따뜻한 물에 담가 온도를 맞춘 뒤 진자로 친다. 진자가 덜 올라갈수록 시편이 에너지를 많이 흡수한 것이다.</p>
+  openModal(`<div class="eb">시험소</div><h2>진자 충격 시험기<span class="tag">재구성</span></h2><p>선체에서 떼어 낸 강재에 홈(노치)을 낸 작은 시편이다. 드라이아이스를 넣은 알코올이나 따뜻한 물에 담가 온도를 맞춘 뒤 진자로 친다. 진자가 덜 올라갈수록 시편이 에너지를 많이 흡수한 것이다.</p>
    <div class="crank"><svg id="cpsvg" viewBox="0 0 200 170" width="210" height="178" aria-label="진자 충격 시험기"><line x1="40" y1="160" x2="160" y2="160" stroke="#c9ced1"/><rect x="92" y="138" width="16" height="10" fill="#9aa1a6" id="cpspec"/><circle cx="100" cy="22" r="4" fill="#e2b257"/><g id="cparm"><line x1="100" y1="22" x2="100" y2="128" stroke="#c9ced1" stroke-width="3"/><circle cx="100" cy="132" r="12" fill="#59646c" stroke="#c9ced1"/></g><text x="100" y="12" font-size="10" text-anchor="middle" fill="#b5b9b8" id="cpE"></text></svg>
    <div><div class="fdial" style="grid-template-columns:4rem auto 4.5rem auto"><span class="fl">온도</span><button type="button" id="cpL" aria-label="온도 내리기">◀</button><b id="cpT"></b><button type="button" id="cpR" aria-label="온도 올리기">▶</button></div><div class="row"><button id="cpGo" type="button">진자 놓기</button></div></div></div>
    <table class="tt"><thead><tr><th>온도</th><th>흡수 에너지</th><th>부러진 모양</th></tr></thead><tbody id="cpTab"><tr><td colspan="3" class="src">아직 친 시편이 없습니다.</td></tr></tbody></table>
@@ -127,10 +127,10 @@ function verdict(){
   try{ const k='mt-score-2'; if(score>(+localStorage.getItem(k)||0)) localStorage.setItem(k,score); localStorage.setItem('mt-done-2','1'); }catch(e){}
   openModal(`<div class="eb">${score>=90?'수석 조사관':score>=70?'조사관':'수습 조사관'}</div><div class="score">${score}<span style="font-size:1rem;color:var(--muted)"> / 100점</span></div>
     <p>걸린 시간 ${fmt(TIME_LIMIT-tl)}${timeLeft<=0?' (제한 시간 초과)':''} · 실수 ${miss}번 · 힌트 ${hints}번</p>
-    <div class="fb"><b>원인 · 저온 취성 파괴</b><br>이 강재는 기온이 내려가면 연성에서 취성으로 바뀝니다. 영하의 새벽, 짐도 파도도 없었는데 응력이 몰린 곳에서 생긴 균열이 멈출 곳 없이 선체를 가로질렀습니다. 반짝이는 평평한 면과 V자 무늬가 그 흔적입니다.</div>
-    <div class="fb"><b>시작점 · 3번 화물창의 각진 모서리</b><br>각진 모서리에는 응력이 몰립니다. 파단면의 V자 꼭짓점이 모두 그쪽을 가리켰습니다. 용접 결함도 있었지만 균열은 용접부에서 시작하지 않았습니다.</div>
+    <div class="fb"><b>원인 · 저온 취성 파괴</b><br>이 강재는 기온이 내려가면 연성에서 취성으로 바뀝니다. 짐도 파도도 없었지만, 선체에는 용접할 때 남은 응력과 차가운 갑판과 따뜻한 물의 온도 차가 만든 응력이 걸려 있었습니다. 취성이 된 강재에는 그 정도 힘으로도 충분했고, 응력이 몰린 곳에서 생긴 균열이 멈출 곳 없이 선체를 가로질렀습니다. 반짝이는 평평한 면과 V자 무늬가 그 흔적입니다.</div>
+    <div class="fb"><b>시작점 · 3번 화물창의 각진 모서리</b><br>각진 모서리에는 응력이 몰립니다. 파단면의 V자 꼭짓점이 모두 그쪽을 가리켰습니다. 이 배에서는 용접부가 아니라 모서리에서 시작했지만, 실제로 많은 배에서는 용접 결함이 시작점이 되었습니다. 어느 쪽이든 노치가 있는 곳에서 취성 강재가 깨진 것입니다.</div>
     <div class="fb"><b>대책 · 재료, 설계, 구조를 함께</b><br>낮은 온도에서도 질긴 강재를 충격 시험으로 고르고, 모서리를 둥글게 해 응력집중을 줄이고, 균열이 달리더라도 멈추도록 리벳 띠를 덧댑니다. 용접을 버리거나 판만 두껍게 하는 것은 답이 아닙니다.</div>
-    <h3 style="margin-top:16px">실제로는 어떻게 되었나</h3><p>2차 대전 중 미국은 리버티선 2,710척을 지었습니다. 전쟁 중 심각한 취성 파괴가 1,500건 가까이 보고됐고, 리버티선 3척을 포함한 12척이 예고 없이 두 동강 났습니다.</p><p>가장 유명한 사진은 1943년 1월 16일 오리건주 포틀랜드 조선소 의장 안벽에서 갈라진 유조선 셰넥터디호입니다. 잔잔한 날씨에 묶여 있던 배가 굉음과 함께 거의 반으로 갈라졌고, 바닥판만 버텼습니다.</p><p>처음에는 용접이 의심받았습니다. 그러나 케임브리지 대학의 콘스턴스 티퍼는 균열이 용접부가 아니라 강재 자체의 취성에서 비롯했음을 보였습니다. 심각한 균열의 절반 이상이 화물창 모서리에서 시작했다는 분석도 있습니다. 이후 화물창 모서리를 고치고 균열 정지 띠를 덧대는 보강이 이뤄졌습니다.</p><p>이 사고들은 연성-취성 천이온도라는 개념과 오늘날 파괴역학의 출발점이 되었습니다.</p>
-    <p class="src"><span class="tag" style="margin:0 6px 0 0">재구성</span>배와 인물, 대사, 자물쇠, 기상 기록, 충격·인장 시험 값은 여러 실제 사례를 바탕으로 게임용으로 만든 것입니다. 자료: <a href="https://en.wikipedia.org/wiki/SS_Schenectady">Wikipedia, SS Schenectady</a> · <a href="https://www.mdpi.com/2078-1547/7/2/20">Challenges 7(2):20, Liberty ship failures</a> · <a href="https://link.springer.com/article/10.1007/s11837-015-1668-1">JOM (2015), 리버티선 리벳 연구</a></p>
+    <h3 style="margin-top:16px">실제로는 어떻게 되었나</h3><p>2차 대전 중 미국은 리버티선 2,710척을 지었습니다. 전쟁 중 심각한 취성 파괴가 1,500건 가까이 보고됐고, 리버티선 3척을 포함한 12척이 예고 없이 두 동강 났습니다.</p><p>가장 유명한 사진은 1943년 1월 16일 오리건주 포틀랜드 조선소 의장 안벽에서 갈라진 유조선 셰넥터디호입니다. 잔잔한 날씨에 묶여 있던 배가 굉음과 함께 거의 반으로 갈라졌고, 바닥판만 버텼습니다.</p><p>셰넥터디호의 균열은 갑판의 불량 용접부에서 시작했고, 처음에는 용접만 탓했습니다. 그러나 케임브리지 대학의 콘스턴스 티퍼는 같은 강재가 일정 온도 아래에서 갑자기 취성으로 바뀐다는 것을 보여, 근본 원인이 강재의 저온 취성임을 밝혔습니다. 용접 결함과 각진 모서리는 균열이 시작될 자리를 만들었고, 한 장으로 이어진 용접 선체는 균열이 멈출 곳을 없앴습니다. 리버티선의 심각한 균열 가운데 절반가량은 화물창 모서리에서 시작했다는 분석이 있습니다. 이후 화물창 모서리를 고치고 균열 정지 띠를 덧대는 보강이 이뤄졌습니다.</p><p>노치 충격 시험과 온도에 따른 취성 천이는 이미 알려져 있었지만, 이 사고들로 연성-취성 천이가 선박 강재를 고르는 핵심 기준이 되었고, 오늘날 파괴역학이 발전하는 계기가 되었습니다.</p>
+    <p class="src"><span class="tag" style="margin:0 6px 0 0">재구성</span>배와 인물, 대사, 자물쇠, 기상 기록, 충격·인장 시험 값은 여러 실제 사례를 바탕으로 게임용으로 만든 것입니다. 게임 속 배는 리버티선과 T2 유조선 사례를 섞어 만든 가상의 배이며, 사고 시각과 균열 시작점은 실제 셰넥터디호(밤 11시 무렵, 갑판 용접부)와 다릅니다. 자료: <a href="https://www.twi-global.com/media-and-events/insights/schenectady-t2-tanker">TWI, Schenectady</a> · <a href="https://en.wikipedia.org/wiki/SS_Schenectady">Wikipedia, SS Schenectady</a> · <a href="https://www.mdpi.com/2078-1547/7/2/20">Challenges 7(2):20, Liberty ship failures</a> · <a href="https://link.springer.com/article/10.1007/s11837-015-1668-1">JOM (2015), 리버티선 리벳 연구</a></p>
     <div class="row"><a class="btnlink" href="ch3.html">다음 사건</a><a class="btnlink ghost" href="index.html">사건 목록</a><button id="again" type="button" class="ghost">처음부터 다시</button></div>`);
   $('again').onclick=()=>location.reload(); }
