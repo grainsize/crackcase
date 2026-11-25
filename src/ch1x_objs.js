@@ -28,9 +28,9 @@ const OBJS=[
   act(){ say([['철도 회사 서기','서류함에는 회사 운행 장부와 기술자들 의견서가 들어 있습니다. 그림 자물쇠라 저도 못 엽니다.',330],['철도 회사 서기','부서짐의 순서를 아는 사람만 열 수 있다나요. 차축을 직접 들여다본 사람이라면 알겠지요.',330]], ()=>{ flags.clerk=true; hud(); }); }},
  {id:'chest', t:'서류함', who:'서기 천막의 서류함', verb:'자물쇠 풀기', pos:[9.7,-20.4], show:()=>true, done:()=>flags.chest,
   act(){ if(flags.chest) return say([['조사관','서류는 이미 꺼냈다.',420]]); seqLock(()=>{ flags.chest=true; chestOpenT=0; chestLid.userData.lock.visible=false; setTimeout(()=>give(['ledger','memo']),600); }); }},
- {id:'final', t:'보고 상자', who:'조사위원회 보고 상자', verb:'다이얼 맞추기', pos:[9.6,-30.0], show:()=>true, done:()=>finished,
+ {id:'final', t:'조사 청문회', who:'조사위원회 청문회장', verb:'청문회 열기', pos:[9.6,-30.0], show:()=>true, done:()=>finished,
   act(){ if(finished) return verdict(); if(!flags.origin) return say([['조사위원','증거도 없이 보고할 셈이오? 차축 파단면부터 보고 오시오.',230]]);
-    say([['조사위원','결론이 났소? 상자의 다이얼을 맞추면 보고서가 접수되오.',230]], finalLock); }}
+    startHearing(); }}
 ];
 const spots = OBJS.map(o=>{ const [x,z]=o.pos, y=gh(x,z), g=new T.Group();
   const m=new T.MeshStandardMaterial({color:0xe2b257,emissive:0xe2a23a,emissiveIntensity:1.6,roughness:.4});

@@ -10,7 +10,8 @@ def between(a,b,new):
     global s
     i=s.index(a); j=s.index(b,i); s=s[:i]+new+s[j:]
 R=lambda f: open('/home/claude/'+f,encoding='utf-8').read()
-L=R('ch2x_logic.js')
+L=(R('ch2x_logic.js')+R('ch2x_hear.js')+R('hearing_core.js'))
+rep('</title>','</title>\n<script>try{ if(localStorage.getItem("mt-done-1")!=="1") location.replace("index.html#locked-2"); }catch(e){}</script>')
 rep('</style>',CSS+'</style>')
 rep('<div id="pips" aria-hidden="true"></div>\n  <small>남은 조사 점수 <b id="left"></b> / 8 · 단서 <b id="ncl">0</b>개</small>\n  <div id="goal"></div>',
     '<div class="tline"><span id="timer">15:00</span><small>남은 시간 · 실수 <b id="miss">0</b></small></div>\n  <div id="goal"></div>\n  <div id="inv" class="inv"></div>')

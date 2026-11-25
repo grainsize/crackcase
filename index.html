@@ -49,9 +49,13 @@ a.case{transition:transform .15s,border-color .15s}
 .state{position:absolute;right:10px;top:10px;font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:99px;background:rgba(10,14,18,.8);border:1px solid var(--line)}
 .state.new{color:var(--brass);border-color:var(--brass)}
 .state.done{color:var(--good);border-color:var(--good)}
-.locked{opacity:.55}
-.locked .thumb{background:repeating-linear-gradient(135deg,#141b20 0 10px,#11171b 10px 20px)}
-.locked .thumb .lock{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:.85rem}
+.locked .thumb{filter:grayscale(.9)}
+.locked .thumb .lock{position:absolute;inset:0;display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;color:var(--ink);font-size:.86rem;font-weight:600;background:rgba(8,10,12,.62)}
+.locked .thumb .lock span{font-size:1.6rem}
+.locked h3{color:var(--muted)}
+.state.soon{color:var(--muted)}
+a.case.soon .thumb{filter:saturate(.8) brightness(.85)}
+#toast{position:fixed;left:50%;top:18px;transform:translateX(-50%);z-index:5;background:#1b2229;border:1px solid var(--brass);color:var(--ink);padding:10px 18px;border-radius:6px;font-weight:600}
 footer{margin-top:44px;font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
 footer p{margin:4px 0}
 @media (prefers-reduced-motion:reduce){a.case{transition:none}}
@@ -64,7 +68,7 @@ footer p{margin:4px 0}
     <div>
       <div class="eb">성효경TV · 시즌 1</div>
       <h1>재료 탐정</h1>
-      <p>부서진 것에는 이유가 있습니다. 역사 속 사고 현장에 조사관으로 들어가 단서를 찾고, 자물쇠를 풀고, 파단면을 직접 들여다보며 원인을 밝혀내세요. 피로, 취성 파괴, 응력 부식 균열까지 사건 하나에 재료 개념 하나씩 배웁니다.</p>
+      <p>부서진 것에는 이유가 있습니다. 역사 속 사고 현장에 조사관으로 들어가 단서를 찾고, 자물쇠를 풀고, 파단면을 직접 들여다본 뒤, 마지막 청문회에서 증거를 내밀어 엉터리 주장을 뒤집으세요. 피로, 취성 파괴, 응력 부식 균열까지 사건 하나에 재료 개념 하나씩 배웁니다.</p>
     </div>
     <div class="cta">
       <a class="btn" id="cont" href="ch1.html">1화부터 시작</a>
@@ -85,19 +89,31 @@ const CASES=[
  ['베르사유의 차축','1842 · 프랑스 뫼동','피로','c1.jpg','ch1.html'],
  ['두 동강 난 리버티선','1943 · 미국 조선소','저온 취성','c2.jpg','ch2.html'],
  ['타이타닉의 이음매','1912 · 북대서양','리벳과 저온 취성','c3.jpg','ch3.html'],
- ['보스턴 당밀 탱크','1919 · 미국 보스턴','응력집중'],['코멧 여객기','1954 · 지중해','여압 피로'],['F-111','1969 · 미국','초기 결함'],
- ['실버 브리지','1967 · 미국 오하이오강','응력 부식 균열'],['성수대교','1994 · 서울','용접 결함과 피로'],['ICE 에셰데','1998 · 독일','내부 균열'],
- ['알로하 243편','1988 · 하와이','다발 피로 균열'],['우스터 수영장','1985 · 스위스','염화물 응력 부식'],['베이 브리지 앵커 로드','2013 · 샌프란시스코','수소 취성'],
- ['알렉산더 키엘란','1980 · 북해','부착물 용접부 피로'],['JAL 123편','1985 · 일본','수리 불량과 피로'],['콩코드','2000 · 파리','외부 이물질 연쇄 파손']];
+ ['보스턴 당밀 탱크','1919 · 미국 보스턴','응력집중과 취성','c4.svg',null,'1919년 1월 15일 한낮, 보스턴 항구 옆 거대한 당밀 탱크가 굉음과 함께 터졌습니다. 갈색 파도가 거리를 덮쳐 고가 철도 기둥을 꺾고 21명의 목숨을 앗아 갔습니다. 탱크는 한 번도 물을 채워 시험한 적이 없었고, 주민들은 늘 새어 나오는 당밀을 보았다고 합니다.','터진 강판 조각과 맨홀 주변 이음매를 조사해, 탱크가 왜 하필 그날 터졌는지 밝혀내세요.'],
+ ['코멧 여객기','1954 · 지중해','여압 피로','c5.svg',null,'세계 첫 제트 여객기 코멧은 하늘의 자랑이었습니다. 그런데 1954년, 두 대가 몇 달 사이 지중해 상공에서 잇따라 공중 분해됐습니다. 엔진도 날씨도 조종사도 아니었습니다.','바다에서 건져 올린 동체 조각과 거대한 수조 시험장을 오가며, 이륙과 착륙을 반복할 때마다 동체에 무슨 일이 일어났는지 찾아내세요.'],
+ ['F-111','1969 · 미국','초기 결함과 손상 허용','c6.svg',null,'날개를 펴고 접는 최신 전투기 F-111이 1969년 훈련 중 날개 하나를 잃고 추락했습니다. 비행 시간은 겨우 100여 시간. 피로라기에는 너무 이른 파손이었습니다.','날개 회전축 부품의 파단면에서 처음부터 숨어 있던 무언가를 찾아내고, 결함이 있다고 가정하고 설계하는 새로운 생각에 다가가세요.'],
+ ['실버 브리지','1967 · 미국 오하이오강','응력 부식 균열','c7.svg',null,'1967년 12월 15일 퇴근길, 오하이오강의 실버 브리지가 1분도 안 되어 통째로 무너졌습니다. 46명이 목숨을 잃었습니다. 다리를 매단 것은 쇠사슬처럼 이어진 강철 막대, 아이바였습니다.','강바닥에서 건진 아이바 조각을 맞춰 보며, 눈에 보이지 않을 만큼 작은 균열이 어떻게 다리 전체를 무너뜨렸는지 추적하세요.'],
+ ['성수대교','1994 · 서울','용접 결함과 피로','c8.svg',null,'1994년 10월 21일 아침 출근길, 한강 성수대교의 가운데 상판 48 m가 그대로 강으로 떨어졌습니다. 버스와 승용차가 함께 추락해 32명이 숨졌습니다. 개통한 지 15년밖에 안 된 다리였습니다.','끊어진 수직재 연결부의 용접 단면을 살피고 점검 기록을 뒤져, 다리가 오래전부터 보내던 신호를 찾아내세요.'],
+ ['ICE 에셰데','1998 · 독일','바퀴 내부 피로','c9.svg',null,'1998년 6월 3일, 시속 200 km로 달리던 독일 고속열차 ICE가 에셰데 마을 앞에서 탈선해 다리에 부딪혔습니다. 101명이 숨졌습니다. 시작은 바퀴 하나였습니다.','승차감을 위해 고무를 끼운 바퀴의 강철 타이어를 잘라 보고, 안쪽에서 조용히 자라던 균열을 찾아내세요.'],
+ ['알로하 243편','1988 · 하와이','다발 피로 균열','c10.svg',null,'1988년 4월 28일, 하와이 섬 사이를 날던 보잉 737의 천장 일부가 고도 7,000 m에서 뜯겨 나갔습니다. 비행기는 지붕 없이 착륙했습니다. 이 비행기는 짧은 섬 노선을 9만 번 가까이 오르내렸습니다.','습한 바닷바람과 짧은 비행, 수많은 리벳 구멍이 어떻게 한꺼번에 무너졌는지 동체 이음매를 따라가며 밝혀내세요.'],
+ ['우스터 수영장','1985 · 스위스','염화물 응력 부식','c11.svg',null,'1985년 5월 9일 저녁, 스위스 우스터의 실내 수영장 콘크리트 천장이 수영객들 위로 무너졌습니다. 12명이 숨졌습니다. 천장을 매달던 것은 녹슬지 않는다던 스테인리스 강봉이었습니다.','수영장의 따뜻하고 습한 공기와 소독약 냄새 속에서, 녹슬지 않는 강이 어떻게 끊어졌는지 고정봉을 조사하세요.'],
+ ['베이 브리지 앵커 로드','2013 · 샌프란시스코','수소 취성','c12.svg',null,'2013년, 새로 짓던 샌프란시스코-오클랜드 베이 브리지에서 지진에 대비해 조여 둔 고강도 강 볼트가 개통도 전에 며칠 만에 하나둘 끊어졌습니다. 아무 하중도 더 걸리지 않았는데요.','끊어진 앵커 로드와 보관 기록을 살피며, 강 속으로 스며든 아주 작은 원자를 추적하세요.'],
+ ['알렉산더 키엘란','1980 · 북해','부착물 용접부 피로','c13.svg',null,'1980년 3월 27일 폭풍이 몰아치던 북해, 석유 노동자 숙소로 쓰던 반잠수식 플랫폼이 다리 하나를 잃고 뒤집혔습니다. 123명이 숨졌습니다.','물속 가새에 덧붙인 작은 장치 하나와 그 둘레의 용접을 조사해, 파도가 수백만 번 흔든 결과를 밝혀내세요.'],
+ ['JAL 123편','1985 · 일본','수리 불량과 피로','c14.svg',null,'1985년 8월 12일, 도쿄를 떠난 보잉 747이 이륙 12분 뒤 꼬리날개를 잃고 산으로 추락했습니다. 520명이 숨졌습니다. 7년 전, 이 비행기는 꼬리가 활주로에 닿는 사고를 겪고 수리를 받았습니다.','뒤쪽 압력 격벽의 수리 자국과 리벳 줄을 살펴, 7년 동안 조용히 자란 균열을 찾아내세요.'],
+ ['콩코드','2000 · 파리','이물질에서 시작된 연쇄 파손','c15.svg',null,'2000년 7월 25일, 파리 샤를 드골 공항을 이륙하던 초음속 여객기 콩코드가 불길을 끌며 추락했습니다. 113명이 숨졌습니다. 시작은 활주로에 떨어진 금속 조각 하나였습니다.','활주로의 금속 띠, 찢어진 타이어 조각, 연료 탱크를 차례로 조사해 작은 파편이 어떻게 비극으로 이어졌는지 연결하세요.']];
 const get=k=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } };
+const isDone=n=>get('mt-done-'+n)==='1';
+const isOpen=n=>n===1||isDone(n-1);
 const rank=s=>s>=90?'수석 조사관':s>=60?'조사관':'수습 조사관';
 let cleared=0, total=0, next=null;
-document.getElementById('grid').innerHTML=CASES.map((c,i)=>{ const n=i+1, nn=String(n).padStart(2,'0');
-  if(!c[4]) return `<div class="case locked" aria-label="사건 ${nn} ${c[0]}, 제작 중"><div class="thumb"><span class="no">${nn}</span><div class="lock">제작 중</div></div><div class="body"><h3>${c[0]}</h3><div class="meta">${c[1]}</div><div class="tags"><span class="tag">${c[2]}</span></div></div></div>`;
-  const sc=+get('mt-score-'+n)||0, done=get('mt-done-'+n)==='1'; if(done){ cleared++; total+=sc; } else if(!next) next=c[4];
-  return `<a class="case" href="${c[4]}"><div class="thumb" style="background-image:url(img/${c[3]})"><span class="no">${nn}</span><span class="state ${done?'done':'new'}">${done?sc+'점 · '+rank(sc):'플레이 가능'}</span></div><div class="body"><h3>${c[0]}</h3><div class="meta">${c[1]}</div><div class="tags"><span class="tag k">${c[2]}</span></div></div></a>`; }).join('');
+document.getElementById('grid').innerHTML=CASES.map((c,i)=>{ const n=i+1, nn=String(n).padStart(2,'0'), play=!!c[4];
+  const sc=+get('mt-score-'+n)||0, done=play&&isDone(n), open=play&&isOpen(n); if(done){ cleared++; total+=sc; } else if(open&&!next) next=c[4];
+  if(play&&!open) return `<div class="case locked" aria-label="사건 ${nn} ${c[0]}, ${n-1}화를 해결하면 열림"><div class="thumb" style="background-image:url(img/${c[3]})"><span class="no">${nn}</span><div class="lock"><span>🔒</span>${n-1}화를 해결하면 열립니다</div></div><div class="body"><h3>${c[0]}</h3><div class="meta">${c[1]}</div><div class="tags"><span class="tag">${c[2]}</span></div></div></div>`;
+  const href=play?c[4]:'case.html?n='+n, st=play?(done?`<span class="state done">${sc}점 · ${rank(sc)}</span>`:'<span class="state new">플레이 가능</span>'):'<span class="state soon">제작 중</span>';
+  return `<a class="case${play?'':' soon'}" href="${href}"><div class="thumb" style="background-image:url(img/${c[3]})"><span class="no">${nn}</span>${st}</div><div class="body"><h3>${c[0]}</h3><div class="meta">${c[1]}</div><div class="tags"><span class="tag${play?' k':''}">${c[2]}</span></div></div></a>`; }).join('');
 const cont=document.getElementById('cont');
 if(cleared>0){ cont.href=next||'ch1.html'; cont.textContent=next?'다음 사건 이어하기':'처음부터 다시 풀기'; }
+if(/^#locked-\d+$/.test(location.hash)){ const n=+location.hash.slice(8), t=document.createElement('div'); t.id='toast'; t.setAttribute('role','status'); t.textContent=`${n-1}화를 먼저 해결해야 ${n}화가 열립니다.`; document.body.appendChild(t); setTimeout(()=>t.remove(),4200); history.replaceState(null,'',location.pathname); }
 document.getElementById('stat').innerHTML=`해결한 사건 <b>${cleared}</b> / 3 · 총점 <b>${total}</b>`;
 
 /* 배경: 천천히 번지는 취성 균열 */

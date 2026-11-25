@@ -24,7 +24,7 @@ function goalText(){
   if(!flags.origin) return '갈라진 틈 옆 시편 탁자에서 파단면을 손전등으로 비추고, 균열이 시작된 곳을 짚으세요.';
   if(!flags.charpy) return '시험소의 진자 충격 시험기로 온도를 바꿔 가며 강재를 쳐 보세요.';
   if(!flags.chest) return '갑판 위 조선소 감독 곁의 증거 서류함을 여세요. 균열이 지나간 길을 알아야 합니다.';
-  return '부두의 조사위원회 사무실 앞 보고 상자를 여세요. 원인, 시작점, 대책을 모두 맞혀야 열립니다.'; }
+  return '부두의 조사위원회 사무실 앞에서 청문회를 여세요. 감독과 제철소의 주장을 증거로 뒤집어야 합니다.'; }
 const fmt = s => { s=Math.max(0,Math.ceil(s)); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); };
 function hud(){
   $('timer').textContent = fmt(timeLeft); $('timer').classList.toggle('low', timeLeft<120);
@@ -48,7 +48,7 @@ function showHint(){ if(finished) return;
       : !flags.origin?'V자 무늬는 화살표처럼 균열이 출발한 쪽을 가리킵니다. 모든 V의 꼭짓점이 향하는 끝을 고르세요.'
       : !flags.charpy?'따뜻한 온도와 영하의 온도에서 한 번씩 쳐 보세요. 사고 시각 기온은 부두 남쪽 끝 백엽상 옆 항만 관리인이 알고 있습니다.'
       : !flags.chest?'갈라진 선체 옆면을 부두 끝에서 살펴보면 균열이 지나간 길을 알 수 있습니다. 시작점에서 출발해 멈춘 곳까지 차례로 누르세요.'
-      : '원인은 충격 시험 결과와 기상 기록에, 시작점은 파단면 스케치에, 대책은 설계 검토 메모에 있습니다.';
+      : '청문회에서는 상대 주장과 정면으로 부딪치는 증거를 고르세요. 증거가 모자라면 잠시 휴정하고 현장을 더 둘러봐도 됩니다. 수첩(N)에서 모은 단서를 다시 읽어 보세요.';
     openModal(`<div class="eb">힌트</div><h2>${goalText()}</h2><p>${H}</p><div class="row"><button data-close type="button">닫기</button></div>`); }; }
 
 /* 자물쇠 1: 숫자 다이얼 */
@@ -126,7 +126,7 @@ function verdict(){
   const tl=Math.max(0,timeLeft), score=Math.max(10,Math.min(100,Math.round(60+40*tl/TIME_LIMIT)-miss*4-hints*6));
   try{ const k='mt-score-2'; if(score>(+localStorage.getItem(k)||0)) localStorage.setItem(k,score); localStorage.setItem('mt-done-2','1'); }catch(e){}
   openModal(`<div class="eb">${score>=90?'수석 조사관':score>=70?'조사관':'수습 조사관'}</div><div class="score">${score}<span style="font-size:1rem;color:var(--muted)"> / 100점</span></div>
-    <p>걸린 시간 ${fmt(TIME_LIMIT-tl)}${timeLeft<=0?' (제한 시간 초과)':''} · 자물쇠 실수 ${miss}번 · 힌트 ${hints}번</p>
+    <p>걸린 시간 ${fmt(TIME_LIMIT-tl)}${timeLeft<=0?' (제한 시간 초과)':''} · 실수 ${miss}번 · 힌트 ${hints}번</p>
     <div class="fb"><b>원인 · 저온 취성 파괴</b><br>이 강재는 기온이 내려가면 연성에서 취성으로 바뀝니다. 영하의 새벽, 짐도 파도도 없었는데 응력이 몰린 곳에서 생긴 균열이 멈출 곳 없이 선체를 가로질렀습니다. 반짝이는 평평한 면과 V자 무늬가 그 흔적입니다.</div>
     <div class="fb"><b>시작점 · 3번 화물창의 각진 모서리</b><br>각진 모서리에는 응력이 몰립니다. 파단면의 V자 꼭짓점이 모두 그쪽을 가리켰습니다. 용접 결함도 있었지만 균열은 용접부에서 시작하지 않았습니다.</div>
     <div class="fb"><b>대책 · 재료, 설계, 구조를 함께</b><br>낮은 온도에서도 질긴 강재를 충격 시험으로 고르고, 모서리를 둥글게 해 응력집중을 줄이고, 균열이 달리더라도 멈추도록 리벳 띠를 덧댑니다. 용접을 버리거나 판만 두껍게 하는 것은 답이 아닙니다.</div>

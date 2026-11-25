@@ -20,7 +20,7 @@ function goalText(){
   if(!has('lens')) return '파단면을 들여다볼 확대경이 필요합니다. 누가 잃어버렸을까요?';
   if(!flags.origin) return '창고 안 차축의 파단면을 살피고, 균열이 시작된 곳을 짚으세요.';
   if(!flags.chest) return '서기 천막의 서류함을 여세요. 자물쇠 그림에 순서가 있습니다.';
-  return '조사위원회 천막의 보고 상자를 여세요. 원인, 시작점, 대책을 모두 맞혀야 열립니다.'; }
+  return '조사위원회 천막에서 청문회를 여세요. 엉뚱한 주장이 나올 때마다 알맞은 증거를 내밀어 뒤집어야 합니다.'; }
 const fmt = s => { s=Math.max(0,Math.ceil(s)); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); };
 function hud(){
   $('timer').textContent = fmt(timeLeft); $('timer').classList.toggle('low', timeLeft<120);
@@ -44,7 +44,7 @@ function showHint(){ if(finished) return;
       : !has('lens')?'철도 기술자가 확대경을 잃어버렸다고 합니다. 불탄 객차 옆 잔해 더미를 뒤져 보세요.'
       : !flags.origin?'물결 줄무늬는 균열이 멈칫거리며 자란 자국입니다. 줄무늬가 동심원처럼 모여드는 한 점을 찾으세요.'
       : !flags.chest?'파괴는 작은 시작점에서 출발해, 줄무늬를 남기며 자라고, 마지막에 거칠게 끊어집니다.'
-      : '원인은 수첩의 회전 굽힘과 운행 장부에, 시작점은 파단면 스케치에, 대책은 의견서에 있습니다.';
+      : '청문회에서는 상대 주장과 정면으로 부딪치는 증거를 고르세요. 증거가 모자라면 잠시 휴정하고 현장을 더 둘러봐도 됩니다. 수첩(N)에서 모은 단서를 다시 읽어 보세요.';
     openModal(`<div class="eb">힌트</div><h2>${goalText()}</h2><p>${H}</p><div class="row"><button data-close type="button">닫기</button></div>`); }; }
 
 /* 자물쇠 1: 숫자 다이얼 */
@@ -96,7 +96,7 @@ function verdict(){
   const tl=Math.max(0,timeLeft), score=Math.max(10,Math.min(100,Math.round(60+40*tl/TIME_LIMIT)-miss*4-hints*6));
   try{ const k='mt-score-1'; if(score>(+localStorage.getItem(k)||0)) localStorage.setItem(k,score); localStorage.setItem('mt-done-1','1'); }catch(e){}
   openModal(`<div class="eb">${score>=90?'수석 조사관':score>=70?'조사관':'수습 조사관'}</div><div class="score">${score}<span style="font-size:1rem;color:var(--muted)"> / 100점</span></div>
-    <p>걸린 시간 ${fmt(TIME_LIMIT-tl)}${timeLeft<=0?' (제한 시간 초과)':''} · 자물쇠 실수 ${miss}번 · 힌트 ${hints}번</p>
+    <p>걸린 시간 ${fmt(TIME_LIMIT-tl)}${timeLeft<=0?' (제한 시간 초과)':''} · 실수 ${miss}번 · 힌트 ${hints}번</p>
     <div class="fb"><b>원인 · 피로</b><br>매끈한 면의 줄무늬는 균열이 오랜 시간 조금씩 자란 흔적이고, 거친 면은 남은 단면이 버티지 못해 한 번에 끊어진 자리입니다.</div>
     <div class="fb"><b>시작점 · 저널 어깨 모서리</b><br>지름이 갑자기 바뀌는 모서리에는 응력이 몰립니다. 회전 굽힘에서는 표면 응력이 가장 크므로 균열은 표면에서 시작해 안으로 자랍니다.</div>
     <div class="fb"><b>대책 · 둥근 모서리와 수명 관리</b><br>모서리를 둥글게 하면 응력집중이 줄고, 달린 거리를 관리하면 균열이 위험한 크기로 자라기 전에 바꿀 수 있습니다.</div>

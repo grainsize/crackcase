@@ -37,9 +37,9 @@ const OBJS=[
     ['조선소 감독','…그건 위원회가 볼 일이오. 내 옆 서류함에 리벳선 기록과 설계 검토서가 있소. 위원회가 균열이 지나간 길을 아는 사람만 열 수 있게 잠가 두었다더군.',250]], ()=>{ flags.boss=true; hud(); }); }},
  {id:'chest', t:'증거 서류함', who:'증거 서류함', verb:'자물쇠 풀기', pos:[2.6,-12.4], show:()=>true, done:()=>flags.chest,
   act(){ if(flags.chest) return say([['조사관','서류는 이미 꺼냈다.',420]]); seqLock(()=>{ flags.chest=true; chestOpenT=0; chestLid.userData.lock.visible=false; setTimeout(()=>give(['record','design']),600); }); }},
- {id:'final', t:'보고 상자', who:'조사위원회 보고 상자', verb:'다이얼 맞추기', pos:[22.2,-31.4], show:()=>true, done:()=>finished,
+ {id:'final', t:'조사 청문회', who:'해사위원회 청문회장', verb:'청문회 열기', pos:[22.2,-31.4], show:()=>true, done:()=>finished,
   act(){ if(finished) return verdict(); if(!flags.origin) return say([['조사위원','증거도 없이 보고할 셈이오? 균열 시작부의 파단면부터 보고 오시오.',230]]);
-    say([['조사위원','결론이 났소? 상자의 다이얼을 맞추면 보고서가 접수되오.',230]], finalLock); }}
+    startHearing(); }}
 ];
 const spots = OBJS.map(o=>{ const [x,z]=o.pos, y=gh(x,z), g=new T.Group();
   const m=new T.MeshStandardMaterial({color:0xe2b257,emissive:0xe2a23a,emissiveIntensity:1.6,roughness:.4});

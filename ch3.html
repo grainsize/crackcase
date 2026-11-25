@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <title>재료 탐정 3화 타이타닉의 이음매</title>
+<script>try{ if(localStorage.getItem("mt-done-2")!=="1") location.replace("index.html#locked-3"); }catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&display=swap" rel="stylesheet">
 <style>
@@ -96,6 +97,45 @@ body.cine #sub{bottom:calc(11vh + 16px)}
 .btnlink{display:inline-block;font:inherit;font-weight:600;text-decoration:none;border-radius:4px;border:1px solid var(--brass);background:var(--brass);color:#1b1408;padding:8px 16px}
 .btnlink.ghost{background:transparent;color:var(--brass)}
 #btns .btnlink{padding:6px 12px}
+.claim{margin:10px 0;padding:12px 14px;border-left:3px solid #e04a3a;background:rgba(224,74,58,.08);font-family:'Noto Serif KR',serif;font-size:1.05rem}
+.evid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:10px 0}
+.ev{display:flex;flex-direction:column;gap:4px;text-align:left;padding:10px;border-radius:6px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:inherit;font:inherit;cursor:pointer}
+.ev:hover,.ev:focus-visible{border-color:var(--brass);background:rgba(226,178,87,.12)}
+.ev b{color:var(--brass);font-size:.92rem}.ev small{color:var(--muted);font-size:.76rem;line-height:1.35}
+#fade{transition:opacity .35s}
+.btnlink{display:inline-block;font:inherit;font-weight:600;text-decoration:none;border-radius:4px;border:1px solid var(--brass);background:var(--brass);color:#1b1408;padding:8px 16px}
+.btnlink.ghost{background:transparent;color:var(--brass)}
+#btns .btnlink{padding:6px 12px}
+.tline{display:flex;align-items:baseline;gap:10px;margin:6px 0 2px}
+#timer{font-family:var(--display);font-weight:900;font-size:1.7rem;font-variant-numeric:tabular-nums;color:var(--brass)}
+#timer.low{color:var(--bad)}
+.inv{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.chip{font-size:.75rem;padding:2px 8px;border-radius:99px;background:rgba(226,178,87,.16);border:1px solid rgba(226,178,87,.5)}
+.chip.empty{background:none;border-color:var(--line);color:var(--muted)}
+.dials{display:flex;gap:10px;justify-content:center;margin:14px 0}
+.dial{display:flex;flex-direction:column;align-items:center;gap:4px;background:#0c1116;border:1px solid var(--line);border-radius:6px;padding:6px}
+.dial b{font-family:var(--display);font-size:2.2rem;width:2.2rem;text-align:center;font-variant-numeric:tabular-nums}
+.dial button,.fdial button{padding:2px 12px;background:transparent;color:var(--brass)}
+.fdial{display:grid;grid-template-columns:4.2rem auto 1fr auto;gap:8px;align-items:center;margin:8px 0;background:#0c1116;border:1px solid var(--line);border-radius:6px;padding:8px}
+.fdial b{font-weight:600;text-align:center;font-size:.95rem}
+.fl{color:var(--brass);font-weight:700;font-size:.85rem}
+.tiles{display:flex;gap:12px;justify-content:center;margin:14px 0;flex-wrap:wrap}
+.tile{display:flex;flex-direction:column;align-items:center;gap:6px;background:#0c1116;color:var(--ink);border:2px solid var(--line);padding:8px}
+.tile svg{width:76px;height:76px;border-radius:4px}
+.tile.on{border-color:var(--brass);opacity:.6}
+.crank{display:flex;gap:18px;align-items:center;justify-content:center;margin:10px 0}
+.gauge{position:relative;width:46px;height:120px;border:1px solid var(--line);border-radius:4px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;font-size:.72rem;padding:4px 0;color:var(--muted)}
+.gauge span:first-of-type{color:var(--bad)} .gauge span:last-of-type{color:var(--blue)}
+#gneedle{position:absolute;left:4px;right:4px;top:58px;height:3px;background:var(--brass);transition:none}
+.tt{border-collapse:collapse;width:100%;margin:8px 0}
+.tt td,.tt th{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;font-variant-numeric:tabular-nums}
+.fete{color:var(--bad)}
+.mk.pick{background:#8fc0ea;color:#0b1014}
+.bar{display:inline-block;width:120px;height:8px;border:1px solid var(--line);border-radius:4px;margin-left:8px;vertical-align:middle}
+.bar i{display:block;height:100%;background:var(--brass)}
+@keyframes shake{0%,100%{transform:none}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.shake{animation:shake .35s}
+@media (prefers-reduced-motion:reduce){.shake{animation:none}}
 </style>
 </head>
 <body>
@@ -104,23 +144,24 @@ body.cine #sub{bottom:calc(11vh + 16px)}
 <div class="hud" id="top" hidden>
   <div class="eb">사건 03 · 북대서양 해저 3,700 m</div>
   <h2>타이타닉의 이음매</h2>
-  <div id="pips" aria-hidden="true"></div>
-  <small>남은 조사 점수 <b id="left"></b> / 8 · 단서 <b id="ncl">0</b>개</small>
+  <div class="tline"><span id="timer">15:00</span><small>남은 시간 · 실수 <b id="miss">0</b></small></div>
   <div id="goal"></div>
+  <div id="inv" class="inv"></div>
 </div>
 <div class="hud" id="btns" hidden>
   <a class="btnlink ghost" href="index.html">목록</a>
+  <button class="ghost" id="bHint" type="button">힌트</button>
   <button class="ghost" id="bNote" type="button">수첩</button>
   <button class="ghost" id="bHelp" type="button">조작법</button>
   <button class="ghost" id="bSnd" type="button" aria-pressed="true">소리 켬</button>
 </div>
 <div class="hud" id="prompt" hidden></div>
-<div class="hud" id="keys" hidden>이동 WASD · 달리기 Shift · 점프 Space · 조사·대화 E · 시점 마우스 드래그</div>
+<div class="hud" id="keys" hidden>이동 WASD · 달리기 Shift · 점프 Space · 조사·사용 E · 수첩 N · 힌트 H · 시점 드래그</div>
 <div id="labels"></div>
 <div id="sub" hidden role="status"></div>
 <div id="fade"></div><div id="lbT" hidden></div><div id="lbB" hidden></div><div id="vig" hidden></div>
 <button class="ghost" id="skip" type="button" hidden>건너뛰기 (E)</button>
-<div class="hud" id="insp" hidden><div id="ititle"></div><div id="itxt"></div><div class="row" style="margin-top:8px"><button id="idone" type="button" disabled>관찰 마치기</button></div></div>
+<div class="hud" id="insp" hidden><div id="ititle"></div><div id="itxt"></div><div class="row" style="margin-top:8px"><button id="idone" type="button" disabled>세 곳을 모두 보세요</button></div></div>
 <div class="hud" id="dlg" hidden><div id="dwho"></div><div id="dtxt"></div><div id="dnext">E 또는 클릭으로 다음 ▶</div></div>
 <div id="stick" hidden><i></i></div>
 <div id="tbtn" hidden><button id="tJump" type="button">점프</button><button id="tAct" type="button">조사</button></div>
@@ -130,7 +171,7 @@ body.cine #sub{bottom:calc(11vh + 16px)}
     <div class="eb">재료 탐정 · 사건 03</div>
     <h1>타이타닉의 이음매</h1>
     <p class="sub">1912년 4월 14일 밤, 첫 항해에 나선 타이타닉호가 북대서양에서 빙산을 스쳤습니다. 배는 2시간 40분 만에 가라앉았고, 1,500명 넘는 사람이 목숨을 잃었습니다. 당신은 해저에 잠든 선수부와 잔해밭에서 배가 왜 그렇게 빨리 물에 잠겼는지 밝혀야 합니다.</p>
-    <p>이 사건은 정답 하나로 깔끔하게 모이지 않는 논쟁형입니다. 증거를 모아 가장 설득력 있는 설명을 고르세요. 조사 점수는 8점, 보고서는 출발 지점의 잠수정에서 제출합니다. 실제 해저 탐사는 무인 잠수정으로 했지만, 이 게임에서는 잠수복을 입고 직접 걸어 다닙니다.</p>
+    <p>해저 3,700 m. 잔해밭과 잠수정 주변을 뒤져 단서와 장비를 찾고, 자물쇠를 풀고, 회수한 리벳의 단면을 직접 들여다보세요. 제한 시간은 15분입니다. 마지막 보고는 잠수정 해치의 다이얼로 전송하고, 물이 들어온 길과 재료와 교훈을 모두 맞혀야 합니다. 이 사건은 지금도 논쟁이 이어지는 사건입니다.</p>
     <div class="row"><button id="bStart" type="button">현장으로 들어가기</button><a class="btnlink ghost" href="index.html">사건 목록</a></div>
   </div>
 </div>
@@ -148,8 +189,7 @@ body.cine #sub{bottom:calc(11vh + 16px)}
 <script src="js/UnrealBloomPass.js"></script>
 
 <script>
-/* ================= 게임 데이터 ================= */
-const BUDGET = 8;
+/* ================= 게임 상태 ================= */
 function charpySVG(){ const P=[[-40,3],[-20,3.5],[-2,4],[10,6],[25,12],[40,26],[55,46],[70,60],[85,66]], Q=[[-40,40],[-30,70],[-20,92],[-10,104],[0,110],[20,114],[40,116],[60,117],[85,118]];
   const X=t=>40+(t+40)*1.66, Y=e=>140-e*1.0;
   let s='<figure class="fig"><svg viewBox="0 0 260 178" style="width:360px" role="img" aria-label="온도에 따른 흡수 에너지 개략도. 타이타닉 강판은 영하 2도에서 4줄 정도로 매우 낮고, 오늘날 선박 강재는 같은 온도에서 훨씬 높다">';
@@ -160,127 +200,174 @@ function charpySVG(){ const P=[[-40,3],[-20,3.5],[-2,4],[10,6],[25,12],[40,26],[
   s+=`<polyline fill="none" stroke="#e2b257" stroke-width="2.2" points="${P.map(p=>X(p[0])+','+Y(p[1])).join(' ')}"/><circle cx="${X(-2)}" cy="${Y(4)}" r="3.4" fill="#e2b257"/><text x="${X(60)}" y="${Y(74)}" font-size="8.5" fill="#e2b257" text-anchor="middle">타이타닉 강판</text>`;
   s+='<text x="146" y="172" font-size="9" text-anchor="middle" fill="#b5b9b8">시험 온도(°C)</text><text x="10" y="80" font-size="9" fill="#b5b9b8" transform="rotate(-90 10 80)" text-anchor="middle">흡수 에너지(J)</text></svg>';
   return s+'<figcaption><b>노치 충격 시험.</b> 바닷물 온도 영하 2도에서 타이타닉 강판의 흡수 에너지는 약 4 J로, 거의 버티지 못하고 깨졌습니다. 오늘날 선박 강재는 같은 온도에서도 질깁니다. 곡선 모양은 이해를 돕기 위한 개략도이고, 영하 2도의 값만 보고된 측정치입니다.</figcaption></figure>'; }
-function sonarSVG(){ let s='<figure class="fig"><svg viewBox="0 0 300 140" style="width:380px" role="img" aria-label="음파 영상. 선수 오른쪽 옆판의 판 이음매를 따라 좁은 틈 여러 곳이 보인다"><rect width="300" height="140" fill="#04141a"/>';
-  for(let i=0;i<16;i++) s+=`<line x1="0" x2="300" y1="${10+i*8}" y2="${10+i*8}" stroke="#2a6b66" stroke-opacity=".25"/>`;
-  s+='<path d="M10 30 L250 30 Q290 32 292 70 Q290 108 250 112 L10 112 Z" fill="#0f3a3a" stroke="#5fd0b0" stroke-width="1.5"/>';
-  for(const y of[58,86]) s+=`<line x1="10" x2="282" y1="${y}" y2="${y}" stroke="#5fd0b0" stroke-opacity=".6"/>`;
-  for(let x=40;x<260;x+=34) s+=`<line x1="${x}" x2="${x}" y1="30" y2="112" stroke="#5fd0b0" stroke-opacity=".45"/>`;
-  for(const [x,y,l] of[[60,58,22],[95,86,18],[128,58,26],[160,86,16],[196,58,20],[228,86,22]]) s+=`<rect x="${x}" y="${y-2.5}" width="${l}" height="5" rx="2" fill="#ff6a4a"/>`;
-  s+='<text x="8" y="134" font-size="9" fill="#5fd0b0">선미 쪽</text><text x="292" y="134" font-size="9" fill="#5fd0b0" text-anchor="end">선수 쪽</text><text x="150" y="20" font-size="9" fill="#9fe8d8" text-anchor="middle">진흙 아래 오른쪽 옆판 (붉은색: 벌어진 이음매)</text></svg>';
-  return s+'<figcaption>붉은 표시가 판과 판이 겹친 이음매를 따라 벌어진 틈입니다. 틈의 개수와 위치는 실제 탐사 결과를 바탕으로 단순하게 그린 것입니다.</figcaption></figure>'; }
-const ACTS = [
- {id:'testimony', pre:[['조사관','지원선, 1912년 조사 기록을 읽어 주시오.',420],['지원선 · 기록 담당','생존자들은 충돌이 생각보다 가벼웠다고 했습니다. 살짝 덜컥하고, 몇 초 동안 긁히는 소리가 났다고요.',320]], post:'정면으로 받은 게 아니라 스쳤다. 그런데 배는 세 시간도 버티지 못했다.',
-  t:'생존자 기록', who:'잠수정 무전기', c:1, pos:[30,-30.6],
-  clue:'정면충돌이 아니라 오른쪽 앞부분을 스쳤다. 충격은 가벼웠다. 물 온도 영하 2도.',
-  h:'<p>밤 11시 40분쯤 배의 오른쪽 앞부분이 빙산을 스쳤습니다. 큰 충격 없이 덜컥하는 느낌과 긁히는 소리만 났다는 증언이 많습니다.</p><p>바다는 잔잔했고, 바닷물 온도는 영하 2도 안팎이었습니다. 배는 그 뒤 2시간 40분 만에 가라앉았습니다.</p>'},
- {id:'sonar', pre:[['조사관','진흙에 묻힌 오른쪽 옆판을 음파로 훑어보자.',420]], post:'길게 찢긴 구멍은 없다. 이음매가 벌어졌다. 그 작은 틈들이 여러 구획에 걸쳐 있었다.',
-  t:'음파 탐사', who:'선수 오른쪽 음파 탐지기', c:2, pos:[11.1,85.4],
-  clue:'긴 찢어짐은 없다. 판 이음매를 따라 좁은 틈 여러 곳, 모두 합쳐 약 1.1 m².',
-  h:'<p>선수 오른쪽 옆판은 진흙에 묻혀 있어 음파로만 볼 수 있습니다. 길게 찢긴 구멍은 보이지 않습니다. 대신 판과 판이 겹친 이음매를 따라 좁은 틈이 여러 곳 벌어져 있고, 모두 합쳐도 넓이가 약 1.1 m²(12제곱피트)입니다.</p>'+sonarSVG()},
- {id:'compart', pre:[['지원선 · 선박 공학자','이 배는 방수 구획 16개로 나뉘어 있었습니다. 앞쪽 네 구획까지는 물이 차도 뜨도록 설계됐지요.',280]], post:'구멍이 작아도 여러 구획에 걸치면 배는 버티지 못한다.',
-  t:'구획 설계', who:'위치 표지 부표 무전', c:1, pos:[-22,12.4],
-  clue:'16개 구획 중 네 개까지 물이 차도 뜬다. 틈은 앞쪽 여섯 구획에 걸쳐 있었다.',
-  h:'<p>방수 구획 16개 가운데 네 개까지는 물이 차도 뜰 수 있었습니다. 빙산이 스친 구간은 앞쪽 여섯 구획에 걸쳐 있었습니다. 네 구획을 넘는 순간 배가 가라앉는 것은 시간문제였습니다.</p><p>또 칸막이벽이 맨 위 갑판까지 올라가지 않아, 앞쪽이 가라앉으며 물이 벽을 넘어 다음 구획으로 차례로 넘쳤습니다.</p>'},
- {id:'rivet', pre:[['조사관','이음매가 벌어진 선체 판 조각이다. 리벳 구멍을 살펴보자.',420]], post:'리벳 머리가 떨어지면 판이 벌어진다. 빙산은 판을 찢지 않고 이음매를 풀었다.',
-  t:'리벳 구멍', who:'잔해밭의 리벳 이음 강판', c:2, pos:[-9.6,-14.2],
-  clue:'선수부 이음매에서 리벳 머리가 떨어져 나갔다. 선수·선미는 손으로 박은 연철 리벳, 가운데는 강철 리벳.',
-  h:'<p>판 가장자리의 리벳 구멍 중 상당수가 비어 있고, 주변 진흙에서 머리가 떨어져 나간 리벳 몸통이 여럿 나옵니다.</p><p>이 배에는 리벳이 약 300만 개 들어갔습니다. 가운데 몸통에는 기계로 박은 강철 리벳을 썼지만, 기계가 들어가기 어려운 선수와 선미에는 손으로 박은 연철 리벳을 썼습니다. 빙산이 스친 곳은 선수였습니다.</p><p>자매선 올림픽호가 1911년 충돌 사고를 겪은 뒤 찍은 사진에도 리벳이 빠진 빈 구멍이 수십 개 보입니다.</p>'},
- {id:'surface', pre:[['조사관','회수한 연철 리벳을 세로로 잘라 닦아 둔 시편이다.',420]], post:'슬래그가 많고, 하필 머리 밑에서 결이 꺾였다. 머리가 쉽게 떨어질 수밖에 없었다.',
-  t:'리벳 단면 관찰', who:'잠수정 시편 상자', c:2, pos:[34.6,-26.6],
-  clue:'연철 리벳 속 검은 슬래그 줄무늬가 많고, 머리 쪽에서 결이 직각으로 꺾인다. 그 자리에 균열.',
-  h:'<p>검은 슬래그 줄무늬가 몸통을 따라 늘어서고, 머리 쪽에서 직각으로 꺾입니다. 꺾인 자리에 금이 가 있습니다.</p>'},
- {id:'charpy', pre:[['지원선 · 야금학자','회수한 선체 강판으로 노치 충격 시험을 해 두었습니다. 결과를 보내 드릴까요? 분석에 시간이 꽤 걸렸습니다.',300]], post:'강판도 얼음물 속에서는 유리처럼 깨졌다. 리벳만의 문제는 아니다.',
-  t:'강판 충격 시험', who:'잠수정 무전기', c:3, pos:[34.8,-20.4],
-  clue:'선체 강판도 영하 2도에서는 취성. 흡수 에너지 약 4 J. 다만 당시로서는 좋은 강판이었다.',
-  h:'<p>회수한 강판에 홈을 내 영하 2도에서 진자로 쳤더니 흡수 에너지가 약 4 J에 불과했습니다. 얼음물 온도에서 이 강판은 완전히 취성으로 깨집니다.</p>'+charpySVG()+'<p>그렇다고 불량품은 아니었습니다. 분석에 따르면 당시 구할 수 있던 보통 탄소강 선체 판재 가운데 가장 좋은 축에 들었습니다. 저온 인성이라는 기준 자체가 아직 없던 시절이었습니다.</p>'},
- {id:'plate', pre:[['조사관','잔해밭의 큰 선체 조각이다. 깨진 가장자리를 보자.',420]], post:'휘지 않고 깨졌다. 얼음물 속 강판은 충격을 받아 줄 여유가 없었다.',
-  t:'판재 파단면', who:'잔해밭의 큰 선체 조각', c:1, recon:true, pos:[5.2,-35.6],
-  clue:'잔해밭의 판 조각은 깨진 가장자리가 평평하고, 휘어진 흔적이 거의 없다.',
-  h:'<p>판 조각의 깨진 가장자리가 평평하고 반짝입니다. 휘거나 늘어난 흔적이 거의 없습니다. 2화의 리버티선 파단면과 닮았습니다.</p>'},
- {id:'speed', pre:[['조사관','선교의 기관 전령기다. 그날 밤 속도는 어땠소?',420],['지원선 · 기록 담당','빙산 경고를 여러 번 받고도 거의 최고 속도로 달리고 있었습니다.',320]], post:'왜 부딪혔는지는 설명된다. 왜 물이 그렇게 들어왔는지는 아직이다.',
-  t:'항해 기록', who:'잔해밭의 기관 전령기', c:1, pos:[-16.2,-42.2],
-  clue:'빙산 경고에도 고속 항해. 충돌의 이유이지, 침수 방식의 설명은 아니다.',
-  h:'<p>그날 다른 배들에서 빙산 경고가 여러 차례 왔지만, 배는 거의 최고 속도로 달리고 있었습니다. 달빛 없는 잔잔한 밤이라 빙산 주변에 이는 물결도 없어 너무 늦게 발견했습니다.</p>'},
- {id:'myth', pre:[['지원선 · 기자','1912년 신문들은 빙산이 옆구리를 100 m 가까이 길게 찢었다고 썼지요. 다들 그렇게 믿었습니다.',380]], post:'빙산이 스친 길이와 구멍의 모양은 다른 이야기다. 그 구멍을 본 사람은 없었다.',
-  t:'당시 통설', who:'위치 표지 부표 무전', c:1, pos:[-26,-27.6],
-  clue:'통설: 빙산이 선체를 길게 찢었다. 그러나 그 구멍을 직접 본 사람은 없었다.',
-  h:'<p>사고 직후 사람들은 빙산이 지나간 길이만큼 거대한 찢어진 구멍을 상상했습니다. 빙산이 선체를 스친 구간이 100 m 가까이 되었기 때문입니다.</p><p>하지만 그 구멍을 직접 본 사람은 없었습니다. 선수부는 수십 년 동안 바다 밑 진흙에 묻혀 있었습니다.</p>'},
- {id:'chem', pre:[['지원선 · 야금학자','회수한 리벳의 슬래그 함량도 재 두었습니다. 시간이 꽤 걸리는 분석이었지요.',300]], post:'슬래그는 조금이면 약이고, 많으면 독이다.',
-  t:'리벳 슬래그 분석', who:'잠수정 앞 시료 바구니', c:3, pos:[30,-17.4],
-  clue:'일부 연철 리벳의 슬래그가 오늘날 허용치의 세 배. 많으면 리벳이 쉽게 부러진다.',
-  h:'<p>일부 연철 리벳에 든 슬래그는 오늘날 허용치의 세 배에 이르렀습니다.</p><p>연철에는 원래 유리 같은 슬래그가 섞여 있어, 2~3% 정도면 오히려 힘을 받아 줍니다. 하지만 이보다 많아지면 슬래그의 취성이 앞서서 리벳이 쉽게 부러집니다. 이 리벳들은 숙련도가 다른 작업자들이 손으로 만들어 박았습니다.</p>'}
-];
-const REPORT = {pre:[['지원선 · 조사 책임자','조사관, 결론이 났소? 무전으로 보고해 주시오.',230]], id:'report', t:'보고서 제출', who:'잠수정 해치', pos:[26.6,-24]};
 
-let left = BUDGET, done = new Set(), paused = true, started = false;
+const TIME_LIMIT = 900;
+let inv = [], flags = {}, paused = true, started = false, timeLeft = TIME_LIMIT, miss = 0, hints = 0, finished = false, searching = null, timeUpSaid = false;
 const $ = id => document.getElementById(id);
-
+const ITEMS = {
+  log:{n:'생존자 기록', d:'밤 11시 40분, 배의 오른쪽 앞부분이 빙산을 스쳤다. 덜컥하는 가벼운 충격과 몇 초간 긁히는 소리뿐이었다. 바닷물은 영하 2도. 배는 2시간 40분 만에 가라앉았다.'},
+  tongs:{n:'시료 집게', d:'잠수정 장비함에서 꺼낸 긴 집게. 진흙 속 작은 시료를 집을 수 있다.'},
+  rivet:{n:'머리 잃은 리벳', d:'선수부 이음매 근처 진흙에서 주운 연철 리벳. 머리가 떨어져 나가고 몸통만 남았다.'},
+  section:{n:'리벳 단면 스케치', d:'검은 슬래그 줄무늬가 빽빽하고, 머리 밑에서 결이 직각으로 꺾인다. 균열은 바로 그 꺾인 자리에서 났다. 힘을 받으면 머리가 쉽게 떨어질 수밖에 없다.'},
+  sonar:{n:'음파 영상', d:'길게 찢긴 구멍은 없다. 판과 판이 겹친 이음매를 따라 좁은 틈 여러 곳이 벌어졌고, 모두 합쳐 약 1.1 m²다. 틈은 앞쪽 여섯 구획에 걸쳐 있다.', recon:true},
+  compart:{n:'구획 설계', d:'방수 구획 16개 가운데 앞쪽 네 개까지는 물이 차도 뜨게 설계됐다. 칸막이벽이 맨 위 갑판까지 올라가지 않아, 앞이 가라앉으면 물이 벽을 넘어 다음 구획으로 넘어간다.'},
+  myth:{n:'당시 통설', d:'1912년 신문들은 빙산이 옆구리를 100 m 가까이 길게 찢었다고 썼다. 그러나 그 구멍을 직접 본 사람은 없었다.'},
+  speed:{n:'항해 기록', d:'빙산 경고를 여러 번 받고도 거의 최고 속도로 달렸다. 부딪힌 이유는 설명하지만, 물이 들어온 방식은 설명하지 못한다.'},
+  plate:{n:'판재 파단면', d:'잔해밭 선체 조각의 깨진 가장자리가 평평하고 반짝인다. 휘거나 늘어난 흔적이 거의 없다. 2화의 리버티선 파단면과 닮았다.', recon:true},
+  charpy:{n:'강판 충격 시험', d:'회수한 선체 강판을 영하 2도에서 진자로 쳤더니 흡수 에너지가 약 4 J였다. 얼음물 속에서 강판은 유리처럼 깨진다. 그래도 당시 구할 수 있던 선체 강판 중에서는 좋은 축이었다.', recon:true, f:()=>charpySVG()},
+  chem:{n:'리벳 슬래그 분석', d:'일부 연철 리벳의 슬래그가 오늘날 허용치의 세 배였다. 2~3%면 힘을 받아 주지만, 그보다 많으면 리벳이 쉽게 부러진다. 선수와 선미는 손으로 박은 연철 리벳, 가운데는 기계로 박은 강철 리벳이었다.', recon:true}
+};
+const has = k => inv.includes(k);
+function give(k){ const ks=[].concat(k).filter(x=>!has(x)); if(!ks.length) return; inv.push(...ks); hud(); blip(660,.16); blip(990,.3,'sine',.16,.12);
+  openModal(`<div class="eb">획득</div>`+ks.map(x=>`<h2>${ITEMS[x].n}${ITEMS[x].recon?'<span class="tag">재구성</span>':''}</h2><p>${ITEMS[x].d}</p>${ITEMS[x].f?ITEMS[x].f():''}`).join('')+`<div class="row"><button data-close type="button">계속</button></div>`); }
+function goalText(){
+  if(!flags.radio) return '잠수정 옆 무전기로 지원선과 교신하세요.';
+  if(!flags.locker) return '잠수정 옆 노란 장비함을 여세요. 번호는 빙산을 스친 시각, 24시간제 네 자리입니다.';
+  if(!has('rivet')) return '잔해밭의 리벳 이음 강판 주변 진흙에서 떨어져 나간 리벳을 집게로 주우세요.';
+  if(!flags.section) return '잠수정 뒤쪽 시편 상자에서 리벳을 세로로 잘라 단면을 관찰하세요.';
+  if(!flags.sonar) return '선수 끝 오른쪽의 음파 탐지기로 진흙에 묻힌 옆판을 훑으세요.';
+  if(!flags.case) return '잠수정 앞 분석 보고함을 여세요. 그날 밤 일이 일어난 순서를 알아야 합니다.';
+  return '잠수정 해치의 무전 단말로 원격 청문회를 여세요. 100년 묵은 주장들을 증거로 뒤집어야 합니다.'; }
+const fmt = s => { s=Math.max(0,Math.ceil(s)); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); };
 /* ================= UI ================= */
 function hud(){
-  $('pips').innerHTML = Array.from({length:BUDGET},(_,i)=>`<i class="${i<left?'':'u'}"></i>`).join('');
-  $('left').textContent = left; $('ncl').textContent = done.size;
-  $('goal').textContent = done.size===0 ? '노란 표식을 찾아가 조사를 시작하세요.' : left===0 ? '점수를 다 썼습니다. 잠수정(출발 지점)으로 돌아가 보고하세요.' : '충분히 모았다면 잠수정으로 돌아가 보고하세요.';
-}
+  $('timer').textContent = fmt(timeLeft); $('timer').classList.toggle('low', timeLeft<120);
+  $('miss').textContent = miss; $('goal').textContent = goalText();
+  $('inv').innerHTML = inv.length ? inv.map(k=>`<span class="chip">${ITEMS[k].n}</span>`).join('') : '<span class="chip empty">소지품 없음</span>'; }
 function openModal(html){ $('mcard').innerHTML = html; $('modal').hidden = false; paused = true; keys = {}; const b=$('mcard').querySelector('button'); if(b) b.focus(); }
 function closeModal(){ $('modal').hidden = true; paused = false; $('gl').focus(); if(pendingPost){ sub(pendingPost,'조사관'); pendingPost=null; } }
 $('modal').addEventListener('click', e=>{ if(e.target.dataset.close!==undefined) closeModal(); });
-function drawFracture(){
-  const s = $('frac'); if(!s) return; let seed = 7; const rnd = () => (seed = (seed*16807)%2147483647)/2147483647;
-  let o = '<circle cx="120" cy="120" r="100" fill="#59646c" stroke="#f1ece2" stroke-width="1.5"/>';
-  [94,87,81,76,72].forEach((r,i)=>{ o += `<circle cx="120" cy="120" r="${r}" fill="none" stroke="#11181d" stroke-opacity="${.75-i*.08}" stroke-width="1.2"/>`; });
-  o += '<circle cx="120" cy="120" r="68" fill="#cfd4d2" stroke="#11181d" stroke-width="1"/>';
-  for(let i=0;i<90;i++){ const a=rnd()*6.283,r=Math.sqrt(rnd())*62,x=120+r*Math.cos(a),y=120+r*Math.sin(a),z=3+rnd()*5;
-    const p=[0,1,2,3].map(k=>{const b=k*1.57+rnd();return (x+z*Math.cos(b)).toFixed(1)+','+(y+z*Math.sin(b)).toFixed(1)}).join(' ');
-    o += `<polygon points="${p}" fill="#11181d" fill-opacity="${(.1+rnd()*.4).toFixed(2)}"/>`; }
-  s.innerHTML = o;
-}
-function showAct(a){
-  const open = done.has(a.id), can = left >= a.c;
-  openModal(`<div class="eb">${a.who}</div><h2>${a.t}${a.recon?'<span class="tag">재구성</span>':''}</h2>`+
-    (open ? a.h+`<div class="row"><button data-close type="button">닫기</button></div>`
-          : `<p>이 조사에는 <b>${a.c}점</b>이 듭니다. 남은 점수는 ${left}점입니다.</p><div class="row"><button id="doAct" type="button" ${can?'':'disabled'}>${can?'조사하기':'점수 부족'}</button><button class="ghost" data-close type="button">그만두기</button></div>`));
-  if(open) drawFracture();
-  const b = $('doAct'); if(b) b.onclick = ()=>{ left -= a.c; done.add(a.id); hud(); if(a.id==='surface'){ $('modal').hidden=true; blip(660,.18); startInspect(a); return; } showAct(a); pendingPost=a.post; blip(660,.18); blip(990,.3,'sine',.16,.12); };
-}
+function penalty(sec, msg){ miss++; timeLeft=Math.max(0,timeLeft-sec); hud(); blip(160,.35,'sawtooth',.12); const c=$('mcard'); c.classList.remove('shake'); void c.offsetWidth; c.classList.add('shake'); if(msg){ const w=$('lockmsg'); if(w) w.textContent=msg; } }
 function showNote(){
-  const got = ACTS.filter(a=>done.has(a.id));
-  openModal(`<div class="eb">조사 수첩</div><h2>모은 단서 ${got.length}개</h2><ul class="clues">`+
-    (got.length?got.map(a=>`<li><b>${a.t}</b><br>${a.clue}</li>`).join(''):'<li>아직 모은 단서가 없습니다.</li>')+`</ul><div class="row"><button data-close type="button">닫기</button></div>`);
-}
+  openModal(`<div class="eb">조사 수첩</div><h2>소지품과 단서 ${inv.length}개</h2><ul class="clues">`+
+    (inv.length?inv.map(k=>`<li><b>${ITEMS[k].n}</b><br>${ITEMS[k].d}</li>`).join(''):'<li>아직 모은 것이 없습니다.</li>')+`</ul><p class="src">지금 할 일: ${goalText()}</p><div class="row"><button data-close type="button">닫기</button></div>`); }
 function showHelp(){
-  openModal(`<div class="eb">조작법</div><h2>현장을 돌아다니는 방법</h2><p><b>키보드</b>: WASD나 방향키로 이동, Shift를 누르면 달리기, Space로 점프, E로 조사, N으로 수첩.</p><p><b>시점</b>: 화면을 드래그하면 돌아가고 휠로 거리를 조절합니다.</p><p><b>터치</b>: 왼쪽 아래 스틱으로 이동(끝까지 밀면 달리기), 오른쪽 아래 버튼으로 점프와 조사.</p><p class="src">인물, 나무, 소품 3D 모델: Quaternius (CC0 공개 에셋). 엔진: three.js. 글꼴: Noto Serif KR, Pretendard (둘 다 SIL Open Font License 1.1).</p><div class="row"><button data-close type="button">닫기</button></div>`);
-}
-const Q = [
- ['q1','1. 배는 왜 그렇게 빨리 물에 잠겼습니까?',[['gash','빙산이 옆구리를 100 m 가까이 길게 찢어 커다란 구멍이 났다'],['seams','빙산이 스치는 동안 이음매의 리벳이 끊어져 판이 벌어지고, 좁은 틈이 앞쪽 여섯 구획에 걸쳐 생겼다'],['boiler','보일러가 터져 선체가 안에서 찢어졌다'],['split','충돌 직후 선체가 두 동강 났다']]],
- ['q2','2. 재료 쪽에서 가장 약한 고리는 무엇이었습니까?',[['weld','용접부의 균열'],['rivet','슬래그가 많은 선수부의 연철 리벳, 그리고 얼음물에서 취성이 된 강판'],['nothing','재료는 문제없었고 오직 운항 판단이 잘못됐다']]],
- ['q3','3. 무엇을 권고하겠습니까?',[['weldall','리벳을 없애고 선체를 모두 용접한다'],['speed','빙산 지역에서 속도만 줄이면 된다'],['thick','강판만 두 배로 두껍게 한다'],['fix','리벳 재료와 시공 품질을 관리하고, 강재를 저온 인성으로 고르고, 방수 칸막이를 더 높이 올린다']]]
-];
-function showReport(){
-  openModal(`<div class="eb">지원선 조사 책임자</div><h2>보고서 제출</h2><form id="rf">`+Q.map(([n,l,os])=>`<fieldset><legend>${l}</legend>`+os.map(([v,t])=>`<label class="opt"><input type="radio" name="${n}" id="${n}_${v}" value="${v}"><span>${t}</span></label>`).join('')+`</fieldset>`).join('')+
-    `<p id="warn" class="src" role="status"></p><div class="row"><button type="submit">제출</button><button class="ghost" data-close type="button">더 조사하기</button></div></form>`);
-  $('rf').onsubmit = e=>{ e.preventDefault(); const f=new FormData(e.target),q1=f.get('q1'),q2=f.get('q2'),q3=f.get('q3');
-    if(!q1||!q2||!q3){ $('warn').textContent='세 질문에 모두 답해야 제출할 수 있습니다.'; return; } verdict(q1,q2,q3); };
-}
-function verdict(q1,q2,q3){
-  const ok1=q1==='seams', ok2=q2==='rivet', ok3=q3==='fix', all=ok1&&ok2&&ok3, bonus=Math.min(20,left*5);
-  const score=(ok1?40:0)+(ok2?20:0)+(ok3?20:0)+(all?bonus:0);
+  openModal(`<div class="eb">조작법</div><h2>해저를 걷는 방법</h2><p><b>키보드</b>: WASD나 방향키로 이동, Shift 달리기, Space 점프, E 조사·대화·사용, N 수첩, H 힌트.</p><p><b>시점</b>: 화면을 드래그하면 돌아가고 휠로 거리를 조절합니다.</p><p><b>터치</b>: 왼쪽 아래 스틱으로 이동, 오른쪽 아래 버튼으로 점프와 조사.</p><p><b>길</b>: 잠수정과 잔해밭은 선수부 뒤쪽에 있습니다. 선수부 갑판에는 끊어진 뒤쪽 끝에서 뛰어 올라갈 수 있고, 음파 탐지기는 뱃머리 오른쪽 해저에 있습니다.</p><p><b>규칙</b>: 제한 시간 15분. 자물쇠를 틀리거나 힌트를 보면 시간이 줄어듭니다. 시간이 다 돼도 계속할 수 있지만 점수가 낮아집니다.</p><p class="src">3D 모델: Quaternius (CC0). 엔진: three.js. 글꼴: Noto Serif KR, Pretendard (SIL Open Font License 1.1).</p><div class="row"><button data-close type="button">닫기</button></div>`); }
+function showHint(){ if(finished) return;
+  openModal(`<div class="eb">힌트</div><h2>힌트를 볼까요?</h2><p>힌트를 보면 1분이 줄어듭니다.</p><div class="row"><button id="hYes" type="button">1분 쓰고 보기</button><button class="ghost" data-close type="button">그만두기</button></div>`);
+  $('hYes').onclick=()=>{ hints++; timeLeft=Math.max(0,timeLeft-60); hud();
+    const H = !flags.radio?'출발 지점 바로 앞, 잠수정 꼬리 쪽 해저에 무전기 표식이 있습니다.'
+      : !flags.locker?'밤 11시 40분을 24시간제로 바꾸면 23시 40분, 네 자리로 2340입니다. 장비함은 잠수정 왼쪽 뒤편에 있습니다.'
+      : !has('rivet')?'잔해밭에서 리벳 구멍이 줄지어 난 녹슨 강판을 찾으세요. 잠수정에서 선수부 쪽으로 가다 왼쪽입니다. 그 옆 진흙에서 무언가 반짝입니다.'
+      : !flags.section?'단면에서 결이 꺾이고 금이 간 곳이 리벳이 끊어지는 자리입니다.'
+      : !flags.sonar?'선수부 오른쪽 옆을 따라 뱃머리까지 가세요. 스캔 막대를 끝까지 밀고, 붉은 틈이 있는 마지막 구획 번호를 세세요.'
+      : !flags.case?'빙산이 먼저 스쳤고, 그 힘에 리벳 머리가 떨어졌고, 그래서 판 사이가 벌어졌고, 그 틈으로 물이 찼습니다.'
+      : '청문회에서는 상대 주장과 정면으로 부딪치는 증거를 고르세요. 증거가 모자라면 잠시 휴정하고 현장을 더 둘러봐도 됩니다. 수첩(N)에서 모은 단서를 다시 읽어 보세요.';
+    openModal(`<div class="eb">힌트</div><h2>${goalText()}</h2><p>${H}</p><div class="row"><button data-close type="button">닫기</button></div>`); }; }
+
+/* 자물쇠 1: 숫자 다이얼 */
+function digitLock(title, desc, n, ok, onOpen){
+  let v=Array(n).fill(0);
+  const draw=()=>{ $('dials').innerHTML=v.map((d,i)=>`<div class="dial"><button type="button" data-i="${i}" data-d="1" aria-label="${i+1}번째 숫자 올리기">▲</button><b>${d}</b><button type="button" data-i="${i}" data-d="-1" aria-label="${i+1}번째 숫자 내리기">▼</button></div>`).join(''); };
+  openModal(`<div class="eb">자물쇠</div><h2>${title}</h2><p>${desc}</p><div id="dials" class="dials"></div><p id="lockmsg" class="src" role="status">숫자 키로 바로 입력해도 됩니다.</p><div class="row"><button id="lkOpen" type="button">열어 보기</button><button class="ghost" data-close type="button">물러나기</button></div>`);
+  draw(); let cur=0;
+  $('dials').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; const i=+b.dataset.i; v[i]=(v[i]+(+b.dataset.d)+10)%10; cur=i; blip(900,.03,'square',.04); draw(); };
+  const kd=e=>{ if($('modal').hidden){ removeEventListener('keydown',kd); return; } if(/^Digit\d$/.test(e.code)){ v[cur]=+e.code.slice(5); cur=(cur+1)%n; blip(900,.03,'square',.04); draw(); } };
+  addEventListener('keydown',kd);
+  $('lkOpen').onclick=()=>{ if(v.join('')===ok){ removeEventListener('keydown',kd); blip(520,.08,'square',.1); blip(780,.25,'sine',.15,.08); closeModal(); onOpen(); } else penalty(20,'철컥. 열리지 않는다. (20초 줄어듦)'); }; }
+
+/* 자물쇠 2: 그날 밤의 순서 */
+const NIGHT_ICON=k=>{ const bg='<rect width="64" height="64" fill="#0c2a33"/>';
+  if(k==='ice') return `<svg viewBox="0 0 64 64">${bg}<path d="M14 50 L28 16 L36 28 L42 22 L52 50 Z" fill="#e6f3f7"/><path d="M4 50 H60" stroke="#5fb0c8" stroke-width="2"/><rect x="2" y="42" width="18" height="6" fill="#59646c"/></svg>`;
+  if(k==='head') return `<svg viewBox="0 0 64 64">${bg}<rect x="8" y="30" width="48" height="6" fill="#8a5a3a"/><rect x="8" y="38" width="48" height="6" fill="#6e4630"/><rect x="29" y="30" width="6" height="16" fill="#b8b2a8"/><path d="M24 22 Q32 14 40 22 Z" fill="#b8b2a8" transform="rotate(-25 32 20)"/><path d="M42 12 l6 -4 M44 18 l7 0" stroke="#e2b257" stroke-width="2"/></svg>`;
+  if(k==='seam') return `<svg viewBox="0 0 64 64">${bg}<rect x="6" y="18" width="24" height="30" fill="#8a5a3a"/><rect x="36" y="16" width="22" height="30" fill="#8a5a3a" transform="rotate(6 47 31)"/><path d="M32 16 L33 50" stroke="#ff6a4a" stroke-width="2.5" stroke-dasharray="3 2"/></svg>`;
+  return `<svg viewBox="0 0 64 64">${bg}<rect x="6" y="14" width="52" height="38" fill="none" stroke="#c9ced1"/>${[0,1,2,3,4,5].map(i=>`<line x1="${6+i*8.6}" x2="${6+i*8.6}" y1="14" y2="52" stroke="#c9ced1"/>`).join('')}<rect x="7" y="30" width="43" height="21" fill="#2f86b8" opacity=".8"/></svg>`; };
+function seqLock(onOpen){
+  const tiles=[['seam','이음매가 벌어짐'],['flood','여섯 구획에 물이 참'],['ice','빙산이 스침'],['head','리벳 머리가 떨어짐']], ok='ice,head,seam,flood'; let pick=[];
+  openModal(`<div class="eb">자물쇠</div><h2>분석 보고함</h2><p>지원선 야금학자가 채운 그림 자물쇠다. "그날 밤 일어난 일을 먼저 일어난 것부터 차례로 누르시오."</p><div class="tiles" id="tiles">${tiles.map(([k,n])=>`<button type="button" class="tile" data-k="${k}">${NIGHT_ICON(k)}<span>${n}</span></button>`).join('')}</div><p id="lockmsg" class="src" role="status">누른 순서: 없음</p><div class="row"><button class="ghost" id="tReset" type="button">다시 누르기</button><button class="ghost" data-close type="button">물러나기</button></div>`);
+  const upd=()=>{ $('lockmsg').textContent='누른 순서: '+(pick.length?pick.map(k=>tiles.find(t=>t[0]===k)[1]).join(' → '):'없음'); document.querySelectorAll('.tile').forEach(b=>b.classList.toggle('on',pick.includes(b.dataset.k))); };
+  $('tiles').onclick=e=>{ const b=e.target.closest('.tile'); if(!b||pick.includes(b.dataset.k)) return; pick.push(b.dataset.k); blip(600+pick.length*110,.06,'square',.06); upd();
+    if(pick.length===4){ if(pick.join()===ok){ blip(780,.3); closeModal(); onOpen(); } else { penalty(20); pick=[]; setTimeout(()=>{ if($('lockmsg')){ upd(); $('lockmsg').textContent='순서가 틀렸다. (20초 줄어듦)'; } },10); } } };
+  $('tReset').onclick=()=>{ pick=[]; upd(); }; }
+
+/* 음파 탐사 미니게임 */
+function sonarGame(){
+  const BH=[262,226,190,154,118,82,46], SL=[[268,58,16],[236,86,18],[198,58,20],[164,86,14],[126,58,18],[92,86,16]];
+  let base='<rect width="300" height="150" fill="#04141a"/>';
+  for(let i=0;i<17;i++) base+=`<line x1="0" x2="300" y1="${10+i*8}" y2="${10+i*8}" stroke="#2a6b66" stroke-opacity=".22"/>`;
+  base+='<path d="M10 30 L250 30 Q290 32 292 70 Q290 108 250 112 L10 112 Z" fill="#0f3a3a" stroke="#5fd0b0" stroke-width="1.5"/>';
+  for(const y of[58,86]) base+=`<line x1="10" x2="282" y1="${y}" y2="${y}" stroke="#5fd0b0" stroke-opacity=".5"/>`;
+  BH.forEach(x=>base+=`<line x1="${x}" x2="${x}" y1="30" y2="112" stroke="#9fe8d8" stroke-width="1.4" stroke-dasharray="4 2"/>`);
+  [292,...BH,10].slice(0,-1).forEach((x,i)=>{ const nx=[...BH,10][i]; base+=`<text x="${(x+nx)/2}" y="125" font-size="9" fill="#9fe8d8" text-anchor="middle">${i+1}</text>`; });
+  base+='<text x="150" y="141" font-size="8.5" fill="#5fd0b0" text-anchor="middle">숫자: 뱃머리부터 센 방수 구획 번호</text><text x="292" y="22" font-size="8.5" fill="#5fd0b0" text-anchor="end">뱃머리</text><text x="10" y="22" font-size="8.5" fill="#5fd0b0">선미 쪽</text>';
+  openModal(`<div class="eb">음파 탐지기</div><h2>진흙 아래 오른쪽 옆판<span class="tag">재구성</span></h2><p>선수 오른쪽 옆판은 진흙에 묻혀 있다. 스캔 막대를 뱃머리에서 선미 쪽으로 밀어 옆판을 훑어 보자.</p>
+   <figure class="fig"><svg id="sv" viewBox="0 0 300 150" style="width:100%;max-width:480px" role="img" aria-label="음파 영상">${base}<g id="slits"></g><line id="sweep" x1="292" x2="292" y1="26" y2="116" stroke="#ffe08a" stroke-width="2"/></svg></figure>
+   <label class="src" for="sweepR">스캔 위치</label><input id="sweepR" type="range" min="0" max="100" value="0" style="width:100%;max-width:480px;accent-color:#e2b257">
+   <p id="lockmsg" class="src" role="status">막대를 끝까지 밀어 보세요.</p><div id="sQ"></div><div class="row"><button class="ghost" data-close type="button">물러나기</button></div>`);
+  let far=292, asked=false;
+  $('sweepR').oninput=e=>{ const x=292-(+e.target.value)/100*282; $('sweep').setAttribute('x1',x); $('sweep').setAttribute('x2',x); if(x<far){ far=x; blip(1200,.03,'sine',.03); }
+    $('slits').innerHTML=SL.filter(s=>s[0]+s[2]>=far).map(([sx,sy,l])=>`<rect x="${sx}" y="${sy-2.5}" width="${l}" height="5" rx="2" fill="#ff6a4a"/>`).join('');
+    if(far<20&&!asked){ asked=true; $('lockmsg').textContent='길게 찢어진 곳은 없다. 이음매를 따라 좁은 틈만 줄지어 있다.';
+      $('sQ').innerHTML=`<fieldset><legend>붉은 틈은 뱃머리부터 몇 번째 구획까지 걸쳐 있나?</legend><div class="row">${[2,4,6,8].map(n=>`<button type="button" class="ghost" data-a="${n}">${n}번 구획까지</button>`).join('')}</div></fieldset>`; } };
+  $('sQ').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; if(b.dataset.a==='6'){ closeModal(); flags.sonar=true; give('sonar'); } else penalty(10,'구획 번호를 다시 세어 보세요. (10초 줄어듦)'); }; }
+
+/* 최종 자물쇠 */
+const FINAL=[['물이 들어온 길',['빙산이 옆구리를 100 m 가까이 길게 찢었다','용골이 부러지며 바닥이 갈라졌다','이음매의 리벳 머리가 떨어져 판 사이가 벌어졌다'],2],
+ ['재료',['재료에는 아무 문제가 없었다','슬래그 많은 연철 리벳과, 얼음물에서 취성이 된 강판','강판이 당시 기준으로도 불량품이었다'],1],
+ ['교훈',['리벳 수를 두 배로 늘린다','배를 더 크고 무겁게 만든다','칸막이를 맨 위 갑판까지 올리고, 저온에서 질긴 재료와 고른 품질의 이음을 쓴다','빙산 경고만 잘 들으면 재료는 상관없다'],2]];
+function finalLock(){
+  const v=[0,0,0];
+  const draw=()=>{ $('fdials').innerHTML=FINAL.map(([l,o],i)=>`<div class="fdial"><span class="fl">${l}</span><button type="button" data-i="${i}" data-d="-1" aria-label="${l} 이전">◀</button><b>${o[v[i]]}</b><button type="button" data-i="${i}" data-d="1" aria-label="${l} 다음">▶</button></div>`).join(''); };
+  openModal(`<div class="eb">지원선 조사 책임자</div><h2>보고 다이얼</h2><p>해치 옆 무전 단말에 다이얼이 세 줄 달려 있다. 물이 들어온 길, 재료, 교훈이 모두 맞아야 보고가 전송된다.</p><div id="fdials"></div><p id="lockmsg" class="src" role="status"></p><div class="row"><button id="fOpen" type="button">전송하기</button><button class="ghost" data-close type="button">더 조사하기</button></div>`);
+  draw(); $('fdials').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; const i=+b.dataset.i, n=FINAL[i][1].length; v[i]=(v[i]+(+b.dataset.d)+n)%n; blip(900,.03,'square',.04); draw(); };
+  $('fOpen').onclick=()=>{ const right=FINAL.filter((f,i)=>v[i]===f[2]).length; if(right===3){ finished=true; blip(520,.1); blip(660,.1,'sine',.15,.1); blip(880,.4,'sine',.15,.2); verdict(); } else penalty(30,`지직, 전송 실패. 맞은 다이얼은 ${right}줄뿐이다. (30초 줄어듦)`); }; }
+function verdict(){
+  const tl=Math.max(0,timeLeft), score=Math.max(10,Math.min(100,Math.round(60+40*tl/TIME_LIMIT)-miss*4-hints*6));
   try{ const k='mt-score-3'; if(score>(+localStorage.getItem(k)||0)) localStorage.setItem(k,score); localStorage.setItem('mt-done-3','1'); }catch(e){}
-  const miss = id => done.has(id)?'':' 이 단서는 조사하지 않았습니다.';
-  const why1 = {gash:'가장 오래된 통설입니다. 그러나 음파 탐사에서 긴 찢어짐은 보이지 않았고, 이음매를 따라 좁은 틈들만 있었습니다.'+miss('sonar'),
-    seams:'틈은 모두 합쳐 1 m² 남짓이었지만, 여섯 구획에 걸쳐 있었습니다. 네 구획까지만 버티도록 설계된 배에게는 그것으로 충분했습니다.',
-    boiler:'보일러가 잔해밭에 있는 것은 배가 가라앉으며 부서졌기 때문입니다. 침수는 충돌 직후 앞쪽에서 시작됐습니다.'+miss('testimony'),
-    split:'선체는 가라앉는 마지막 단계에서 둘로 갈라졌습니다. 충돌 직후가 아닙니다. 물은 그 전에 이미 앞쪽 구획에 차 있었습니다.'+miss('compart')}[q1];
-  const fb=(ok,t,x)=>`<div class="fb ${ok?'':'no'}"><b>${ok?'맞음':'틀림'} · ${t}</b><br>${x}</div>`;
-  openModal(`<div class="eb">${score>=90?'수석 조사관':score>=60?'조사관':'수습 조사관'}</div><div class="score">${score}<span style="font-size:1rem;color:var(--muted)"> / 100점</span></div>`+
-    fb(ok1,'침수 방식',ok1?why1:why1+' 정답은 이음매가 풀리며 생긴 좁은 틈이 여러 구획에 걸친 것입니다.')+
-    fb(ok2,'약한 고리',ok2?'리벳 단면과 슬래그 분석, 그리고 강판 충격 시험이 같은 방향을 가리킵니다. 어느 한쪽만 탓하기는 어렵습니다.':(q2==='weld'?'2화에서 배운 답이지만 타이타닉에는 용접이 거의 없었습니다. 선체는 리벳으로 이어 붙였습니다.':'운항 판단은 충돌의 이유입니다. 같은 충돌에서 판이 왜 그렇게 쉽게 벌어졌는지는 재료가 설명합니다.')+miss('surface'))+
-    fb(ok3,'권고',ok3?'리벳, 강재, 구획 설계를 함께 고쳐야 같은 사고를 막을 수 있습니다.':'용접은 2화에서 보았듯 그 자체의 문제를 안고 있고, 속도나 두께만으로는 재료가 얼음물에서 깨지는 문제를 풀지 못합니다. 리벳 품질, 저온 인성, 칸막이 높이를 함께 고쳐야 합니다.')+
-    (all?`<p>남긴 조사 점수 ${left}점으로 가산점 ${bonus}점을 받았습니다.</p>`:'')+
-    `<h3 style="margin-top:16px">실제로는 어떻게 되었나</h3><p>1912년 4월 14일 밤, 타이타닉호는 오른쪽 앞부분이 빙산을 스친 뒤 2시간 40분 만에 가라앉았고, 1,500명 넘는 사람이 목숨을 잃었습니다. 방수 구획 16개 가운데 네 개 넘게 물이 차면 뜰 수 없었는데, 여섯 개가 뚫렸습니다.</p><p>1985년 해저에서 두 동강 난 선체가 발견됐고, 1996년 음파 탐사로 진흙 아래 손상을 처음 들여다봤습니다. 거대한 찢어진 구멍 대신 모두 합쳐 12제곱피트(약 1.1 m²) 정도의 틈이 나왔습니다.</p><p>미국 국립표준기술연구소(NIST)의 팀 포크는 회수한 연철 리벳에 오늘날 허용치의 세 배나 되는 슬래그가 들어 있고, 슬래그의 방향이 손상이 쌓인 방식을 설명할 수 있다고 보고했습니다. 같은 분석에서 선체 강판도 얼음물 온도에서 취성이었습니다. 리벳을 더 탓하는 쪽과 강판을 더 탓하는 쪽의 논쟁은 지금도 이어지지만, 어느 쪽이든 "추위 속에서 재료가 어떻게 깨지는가"라는 같은 질문으로 모입니다.</p><p>사고 뒤 다른 배들은 방수 칸막이를 더 높이 올렸습니다.</p>`+
-    `<p class="src"><span class="tag" style="margin:0 6px 0 0">재구성</span>표시가 붙은 조사, 대사, 음파 영상과 충격 시험 그래프의 모양은 게임용으로 만든 것입니다. 자료: <a href="https://www.nist.gov/node/400756">NIST, Failure of Tiny Rivets May Have Sunk the Titanic</a> · <a href="https://www.nist.gov/node/607356">Foecke, Metallurgy of the RMS Titanic (NISTIR 6118)</a> · <a href="https://link.springer.com/article/10.1007/BF02715155">Leighly 외, RMS Titanic: A metallurgical problem</a></p>`+
-    `<div class="row"><a class="btnlink ghost" href="index.html">사건 목록</a><button id="again" type="button" class="ghost">처음부터 다시</button><button class="ghost" data-close type="button">현장 더 둘러보기</button></div>`);
-  $('again').onclick = ()=>{ left=BUDGET; done=new Set(); hud(); player.pos.set(24,seabed(24,-34),-34); camYaw=Math.PI; closeModal(); };
-}
+  openModal(`<div class="eb">${score>=90?'수석 조사관':score>=70?'조사관':'수습 조사관'}</div><div class="score">${score}<span style="font-size:1rem;color:var(--muted)"> / 100점</span></div>
+    <p>걸린 시간 ${fmt(TIME_LIMIT-tl)}${timeLeft<=0?' (제한 시간 초과)':''} · 실수 ${miss}번 · 힌트 ${hints}번</p>
+    <div class="fb"><b>물이 들어온 길 · 벌어진 이음매</b><br>빙산은 선체를 길게 찢지 않았습니다. 스치는 힘에 리벳 머리가 떨어지면서 판과 판 사이가 벌어졌고, 그 좁은 틈들이 앞쪽 여섯 구획에 걸쳐 있었습니다.</div>
+    <div class="fb"><b>재료 · 리벳과 강판</b><br>선수부의 연철 리벳은 슬래그가 많았고, 머리 밑에서 결이 꺾여 약했습니다. 선체 강판도 영하 2도의 바닷물 속에서는 취성이었습니다. 어느 쪽을 더 탓할지는 지금도 논쟁 중입니다.</div>
+    <div class="fb"><b>교훈 · 설계와 재료를 함께</b><br>칸막이를 위 갑판까지 올리고, 낮은 온도에서도 질긴 재료와 고른 품질의 이음을 씁니다. 리벳을 늘리거나 배를 키우는 것은 답이 아닙니다.</div>
+    <h3 style="margin-top:16px">실제로는 어떻게 되었나</h3><p>1912년 4월 14일 밤, 타이타닉호는 오른쪽 앞부분이 빙산을 스친 뒤 2시간 40분 만에 가라앉았고, 1,500명 넘는 사람이 목숨을 잃었습니다. 방수 구획 16개 가운데 네 개 넘게 물이 차면 뜰 수 없었는데, 여섯 개가 뚫렸습니다.</p><p>1985년 해저에서 두 동강 난 선체가 발견됐고, 1996년 음파 탐사로 진흙 아래 손상을 처음 들여다봤습니다. 거대한 찢어진 구멍 대신 모두 합쳐 12제곱피트(약 1.1 m²) 정도의 틈이 나왔습니다.</p><p>미국 국립표준기술연구소(NIST)의 팀 포크는 회수한 연철 리벳에 오늘날 허용치의 세 배나 되는 슬래그가 들어 있다고 보고했습니다. 같은 분석에서 선체 강판도 얼음물 온도에서 취성이었습니다. 리벳을 더 탓하는 쪽과 강판을 더 탓하는 쪽의 논쟁은 지금도 이어지지만, 어느 쪽이든 "추위 속에서 재료가 어떻게 깨지는가"라는 같은 질문으로 모입니다.</p><p>사고 뒤 다른 배들은 방수 칸막이를 더 높이 올렸습니다.</p>
+    <p class="src"><span class="tag" style="margin:0 6px 0 0">재구성</span>대사, 자물쇠, 음파 영상과 충격 시험 그래프의 모양은 게임용으로 만든 것입니다. 자료: <a href="https://www.nist.gov/node/400756">NIST, Failure of Tiny Rivets May Have Sunk the Titanic</a> · <a href="https://www.nist.gov/node/607356">Foecke, Metallurgy of the RMS Titanic (NISTIR 6118)</a> · <a href="https://link.springer.com/article/10.1007/BF02715155">Leighly 외, RMS Titanic: A metallurgical problem</a></p>
+    <div class="row"><a class="btnlink" href="index.html">사건 목록</a><button id="again" type="button" class="ghost">처음부터 다시</button></div>`);
+  $('again').onclick=()=>location.reload(); }
+/* 3화 청문회 대본 */
+const HEAR={
+ open:[['지원선 · 조사 책임자','해저 원격 청문회를 시작합니다. 1912년부터 이어진 주장들을 차례로 듣겠소. 조사관은 회수한 증거로 답하시오.',230]],
+ rounds:[
+  {who:'지원선 · 기자', p:380, sum:'빙산이 옆구리를 100 m 가까이 길게 찢었소.',
+   claim:[['지원선 · 기자','1912년부터 다들 알고 있지 않습니까. 빙산이 칼처럼 옆구리를 100 m 가까이 길게 찢어 버렸다고요.',380]],
+   ok:['sonar'], no:'그걸로 구멍 모양을 어떻게 압니까?', lose:{myth:'그것 보세요. 신문도 그렇게 썼잖아요!'},
+   win:{sonar:[['조사관','진흙 아래 옆판을 음파로 훑었습니다. 길게 찢긴 구멍은 없습니다. 판과 판이 겹친 이음매를 따라 좁은 틈들만 벌어져 있고, 다 합쳐도 1.1 제곱미터 남짓입니다.',420],['지원선 · 기자','그렇게 작은 틈이었다고요?',380]]}},
+  {who:'선주 측 대변인', p:220, sum:'그렇게 작은 틈으로 이 배가 가라앉을 리 없소.',
+   claim:[['선주 측 대변인','틈이 그렇게 작았다면 더더욱 말이 안 되오. 이 배는 방수 구획으로 나뉜, 가라앉지 않는 배였소.',220]],
+   ok:['compart','sonar'], no:'그게 구획 설계와 무슨 상관이오?',
+   win:{compart:[['조사관','이 배는 앞쪽 네 구획까지만 물이 차도 뜨도록 설계됐습니다. 그런데 틈은 앞쪽 여섯 구획에 걸쳐 있었어요.',420],['조사관','게다가 칸막이벽이 맨 위 갑판까지 올라가지 않아, 앞이 가라앉자 물이 벽을 넘어 다음 칸으로 차례로 넘어갔습니다.',420],['선주 측 대변인','작은 틈이라도… 여섯 칸에 걸치면…',220]],
+        sonar:[['조사관','음파 영상을 다시 보시죠. 틈은 작지만 뱃머리부터 여섯 번째 구획까지 걸쳐 있습니다. 설계는 네 구획까지만 버팁니다.',420],['선주 측 대변인','여섯 칸이라니…',220]]}},
+  {who:'조선소 측 기술자', p:260, sum:'리벳은 문제없었소. 빙산 힘이 워낙 셌을 뿐이오.',
+   claim:[['조선소 측 기술자','리벳 300만 개를 정성껏 박았소. 이음매가 벌어진 건 빙산 힘이 워낙 셌기 때문이지, 리벳 탓이 아니오.',260]],
+   ok:['section','chem'], no:'그걸로 리벳이 약했다는 증명이 되오?',
+   win:{section:[['조사관','회수한 연철 리벳을 잘라 봤습니다. 검은 슬래그 줄무늬가 빽빽하고, 머리 밑에서 결이 직각으로 꺾입니다. 금은 바로 그 꺾인 자리에 났어요.',420],['조사관','가벼운 충격이었다는 증언과 맞습니다. 머리가 쉽게 떨어지자 판 사이가 벌어진 겁니다.',420],['조선소 측 기술자','머리 밑에서… 결이 꺾여 있었다고?',260]],
+        chem:[['조사관','분석 결과, 선수부 연철 리벳 일부에 오늘날 허용치의 세 배나 되는 슬래그가 들어 있었습니다. 기계가 닿지 않는 선수와 선미에는 손으로 만든 연철 리벳을 썼지요.',420],['조선소 측 기술자','하필 빙산이 스친 곳이… 손으로 박은 구간이었군.',260]]}},
+  {who:'지원선 · 야금학자', p:300, sum:'그럼 리벳만 탓하면 되겠군요. 강판은 멀쩡했나요?',
+   claim:[['지원선 · 야금학자','조사관, 한쪽으로 기울지 마시오. 리벳만 범인으로 몰면 끝입니까? 선체 강판은 멀쩡했나요?',300]],
+   ok:['charpy','plate'], no:'그건 강판 이야기가 아니잖아요.',
+   win:{charpy:[['조사관','아닙니다. 회수한 강판도 영하 2도에서 치니 흡수 에너지가 4 J 남짓이었습니다. 얼음물 속에서는 강판도 유리처럼 깨지는 상태였어요.',420],['조사관','리벳과 강판, 어느 쪽을 더 탓할지는 지금도 논쟁 중입니다. 다만 둘 다 추위 속에서 약했다는 건 분명합니다.',420],['지원선 · 야금학자','그래요. 그게 공정한 결론이죠.',300]],
+        plate:[['조사관','잔해밭 선체 조각의 깨진 가장자리입니다. 평평하고 반짝이며 휜 흔적이 거의 없어요. 얼음물 속 강판도 충격을 받아 줄 여유가 없었습니다.',420],['지원선 · 야금학자','리벳만의 문제는 아니었다는 거군요.',300]]}},
+  {who:'지원선 · 조사 책임자', p:230, sum:'그렇다면 이 비극에서 무엇을 배워야 하오?',
+   claim:[['지원선 · 조사 책임자','마지막으로 묻겠소. 이 비극을 되풀이하지 않으려면 무엇을 바꿔야 하오?',230]],
+   ok:['compart','chem','charpy'], ask:'교훈으로 이어질 증거를 내미세요.', no:'그것만으로는 무엇을 바꿀지 알 수 없소.',
+   win:{chem:[['조사관','먼저 이음부터입니다. 손으로 만든 리벳마다 슬래그 양이 들쭉날쭉했습니다. 리벳이든 용접이든 품질이 고른 이음을 써야 합니다.',420],['조사관','그리고 칸막이벽을 맨 위 갑판까지 올려, 몇 칸이 뚫려도 물이 넘어가지 못하게 해야 합니다.',420],['지원선 · 조사 책임자','이음의 품질과 칸막이 높이. 기록해 두겠소.',230]],
+        charpy:[['조사관','먼저 재료입니다. 얼음 바다를 다니는 배라면 그 온도에서도 질긴 강재를 써야 합니다.',420],['조사관','그리고 칸막이벽을 맨 위 갑판까지 올려, 몇 칸이 뚫려도 물이 넘어가지 못하게 해야 합니다.',420],['지원선 · 조사 책임자','추위에 견디는 재료와 칸막이 높이. 기록해 두겠소.',230]],
+        compart:[['조사관','칸막이벽을 맨 위 갑판까지 올려 물이 넘어가지 못하게 해야 합니다. 그리고 리벳과 강판 모두 낮은 온도에서도 질기고, 품질이 고른 재료를 써야 합니다.',420],['지원선 · 조사 책임자','설계와 재료를 함께. 기록해 두겠소.',230]]}}],
+ end:[['지원선 · 조사 책임자','결론을 전송하겠소. 빙산은 선체를 찢지 않았소. 이음매를 풀었소. 슬래그 많은 리벳과 얼음물에 취성이 된 강판, 그리고 높이가 모자란 칸막이벽이 그 작은 틈을 비극으로 키웠소.',230],['지원선 · 기자','100년 동안 우리가 잘못 알고 있었군요.',380],['조사관','바다 밑 3,700 m에서, 배는 여전히 그날의 이야기를 하고 있습니다.',420]]};
+
+/* ================= 청문회: 증거 제시 ================= */
+let hearIdx = 0;
+function startHearing(){ hearIdx = Math.min(hearIdx, HEAR.rounds.length);
+  if(hearIdx===0&&!flags.hearOpen){ flags.hearOpen=true; say(HEAR.open, ()=>hearRound()); } else hearRound(); }
+function hearRound(){ const r=HEAR.rounds[hearIdx]; if(!r) return hearEnd(); say(r.claim, ()=>hearPresent()); }
+function hearPresent(){ const r=HEAR.rounds[hearIdx];
+  const cards=inv.map(k=>`<button type="button" class="ev" data-k="${k}"><b>${ITEMS[k].n}</b><small>${ITEMS[k].d.slice(0,46)}${ITEMS[k].d.length>46?'…':''}</small></button>`).join('');
+  openModal(`<div class="eb">청문회 · ${hearIdx+1} / ${HEAR.rounds.length}</div><h2>${r.who}의 주장</h2><blockquote class="claim">“${r.sum}”</blockquote><p>${r.ask||'이 주장을 뒤집을 증거를 내미세요.'}</p><div class="evid" id="evid">${cards||'<p class="src">가진 증거가 없습니다.</p>'}</div><p id="lockmsg" class="src" role="status">틀린 증거를 내밀면 20초가 줄어듭니다.</p><div class="row"><button class="ghost" data-close type="button">증거를 더 찾아오겠소 (잠시 휴정)</button></div>`);
+  $('evid').onclick=e=>{ const b=e.target.closest('.ev'); if(!b) return; const k=b.dataset.k; $('modal').hidden=true;
+    if(r.ok.includes(k)){ blip(880,.12,'square',.12); blip(1320,.3,'sine',.14,.1); const flash=$('fade'); flash.style.background='#fff'; flash.style.opacity='.85'; setTimeout(()=>{ flash.style.opacity='0'; setTimeout(()=>flash.style.background='',400); },120);
+      say([['조사관','이의 있습니다!',420]].concat(r.win[k]||r.win._), ()=>{ hearIdx++; hearRound(); }); }
+    else { miss++; timeLeft=Math.max(0,timeLeft-20); hud(); blip(160,.35,'sawtooth',.12);
+      say([[r.who,(r.lose&&r.lose[k])||r.no||'그게 이 일과 무슨 상관이오? 다시 생각해 보시오.',r.p||250]], ()=>hearPresent()); } }; }
+function hearEnd(){ finished=true; hud(); blip(520,.1); blip(660,.1,'sine',.15,.1); blip(880,.4,'sine',.15,.2); say(HEAR.end, verdict); }
 /* 대사와 자막 */
 let dq=null, di=0, dchar=0, ddone=null, dtimer=0, subQ=[], subT=0, pendingPost=null;
 function showLine(){ $('dwho').textContent=dq[di][0]; dchar=0; $('dtxt').textContent=''; }
@@ -293,7 +380,7 @@ function talkTick(dt){
   if(subT>0){ subT-=dt; if(subT<=0) $('sub').hidden=true; }
   else if(subQ.length&&$('modal').hidden&&started){ const [w,x]=subQ.shift(); $('sub').innerHTML=(w?'<b>'+w+'</b>':'')+x; $('sub').hidden=false; subT=Math.max(3.2,x.length*.12); } }
 $('dlg').onclick = advance;
-$('bNote').onclick = showNote; $('bHelp').onclick = showHelp;
+$('bNote').onclick = showNote; $('bHelp').onclick = showHelp; $('bHint').onclick = showHint;
 
 /* ================= 3D 세계 ================= */
 const T = THREE, canvas = $('gl');
@@ -526,6 +613,28 @@ const embG=new T.BufferGeometry(); embG.setAttribute('position', new T.BufferAtt
 const embers=new T.Points(embG, new T.PointsMaterial({map:glowTex('rgba(230,250,255,.9)','rgba(230,250,255,0)'), size:.16, transparent:true, depthWrite:false})); embers.frustumCulled=false; scene.add(embers);
 
 let pingT=4;
+/* ===== 방탈출 소품: 잠수정 장비함, 진흙 속 리벳, 분석 보고함, 보고 단말 ===== */
+const mLock=M(0xd8b04a,{metalness:.7,roughness:.35});
+const toolLid=new T.Group();
+{ const g=new T.Group(); onFloor(g,26.0,-29.8,0); g.rotation.y=.5;
+  box(1.0,.55,.6,mYel,0,.28,0,g); toolLid.position.set(0,.55,-.3); g.add(toolLid); box(1.02,.07,.62,mYel,0,.035,.31,toolLid);
+  const lk=new T.Group(); lk.position.set(0,.38,.31); g.add(lk); box(.18,.13,.05,mLock,0,0,0,lk); for(let i=0;i<4;i++){ const w=cyl(.02,.02,.03,mIron,-.045+i*.03,-.01,.03,lk,8); w.rotation.x=Math.PI/2; } toolLid.userData.lock=lk;
+  const tg=new T.Group(); tg.position.set(0,.6,0); g.add(tg); for(const s of[-1,1]){ const a=box(.9,.03,.03,mIron,0,0,s*.03,tg); a.rotation.y=s*.04; } box(.12,.08,.12,mLock,-.45,0,0,tg); tg.visible=false; toolLid.userData.torch=tg;
+  col(26.0,-29.8,.65); }
+let toolOpenT=-1;
+function openToolbox(){ toolOpenT=0; toolLid.userData.lock.visible=false; }
+/* 진흙 속 리벳 반짝임 */
+const clockGlint=new T.Sprite(new T.SpriteMaterial({map:glowTex('rgba(230,250,255,1)','rgba(230,250,255,0)'),blending:T.AdditiveBlending,depthWrite:false,fog:false}));
+const clockMesh=lathe([[.035,0],[.035,.11],[0,.12]],mRustD,0,0,0,scene,8);
+{ onFloor(clockMesh,-9.9,-13.2,.04); clockMesh.rotation.set(Math.PI/2,.4,0); clockGlint.position.set(-9.9,seabed(-9.9,-13.2)+.25,-13.2); clockGlint.scale.set(.6,.6,1); scene.add(clockGlint); }
+/* 분석 보고함 */
+const chestLid=new T.Group();
+{ const g=new T.Group(); onFloor(g,32.2,-16.6,0); g.rotation.y=-.3; const mC=M(0x3a4a52,{metalness:.5,roughness:.5});
+  box(.7,.36,.46,mC,0,.18,0,g); chestLid.position.set(0,.36,-.23); g.add(chestLid); box(.72,.07,.48,mC,0,.035,.23,chestLid);
+  for(const x of[-.27,.27]) box(.03,.37,.47,mLock,x,.18,0,g); const lk=box(.14,.14,.04,mLock,0,.25,.25,g); chestLid.userData.lock=lk;
+  const p=box(.45,.02,.32,M(0xe9e0c8),0,.34,0,g); p.castShadow=false; col(32.2,-16.6,.55); }
+let chestOpenT=-1;
+
 function worldTick(dt,t){
   if(typeof player!=='undefined'&&player.g){ const fx=Math.sin(player.yaw), fz=Math.cos(player.yaw);
     head.position.set(player.pos.x+fx*.35,player.pos.y+1.75,player.pos.z+fz*.35); head.target.position.set(player.pos.x+fx*9,player.pos.y+.2,player.pos.z+fz*9); head.target.updateMatrixWorld();
@@ -633,11 +742,42 @@ const DB=['산소 잔량 확인, 이상 없음.','이 근처는 진흙이 꽤 �
 npc({coat:0x2f6f8a,hatType:'cap',bark:DB,model:'Worker.glb',rig:{hat:'helmet',hatScale:.95,colors:{Worker_Yellow:0x2f6f8a,Worker_Vest:0x2a2e32}}},-4,-12,0,[[-4,-12],[-10,-30],[4,-44],[12,-20]],.9);
 npc({coat:0xb84a3a,hatType:'cap',bark:DB,model:'WomanWorker.glb',rig:{h:1.68,hat:'helmet',hatScale:.92,colors:{Worker_Yellow:0xb84a3a,Worker_Vest:0x2a2e32}}},16,20,0,[[16,20],[17.5,60],[13,92],[17.5,60]],.8);
 
-/* 조사 표식 */
-const spots = ACTS.concat([REPORT]).map(a=>{ const [x,z]=a.pos, y=gh(x,z), g=new T.Group();
+/* ================= 상호작용 대상 ================= */
+const OBJS=[
+ {id:'radio', t:'잠수정 무전기', who:'지원선 무전', verb:'교신하기', pos:[30,-30.6], show:()=>true, done:()=>flags.radio,
+  act(){ say([['조사관','지원선, 해저 도착. 1912년 기록부터 읽어 주시오.',420],['지원선 · 기록 담당','생존자들은 충돌이 생각보다 가벼웠다고 했습니다. 밤 11시 40분쯤 살짝 덜컥하고, 몇 초 동안 긁히는 소리가 났다고요.',320],
+    ['조사관','그런데 배는 세 시간도 못 버텼지. 물이 어디로 들어왔는지 찾아보겠소.',420],['지원선 · 기록 담당','장비함 잠금은 충돌 시각으로 맞춰 두었습니다. 24시간제 네 자리입니다. 시료 집게가 들어 있어요.',320]],
+    ()=>{ flags.radio=true; give('log'); }); }},
+ {id:'locker', t:'장비함', who:'잠수정 장비함', verb:'자물쇠 풀기', pos:[25.2,-28.6], show:()=>true, done:()=>flags.locker,
+  act(){ if(flags.locker) return say([['조사관','이미 비어 있다.',420]]);
+    digitLock('잠수정 장비함','네 자리 숫자 자물쇠다. 빙산을 스친 시각, 24시간제로 맞춰 두었다고 했다.',4,'2340',()=>{ flags.locker=true; openToolbox(); setTimeout(()=>{ toolLid.userData.torch.visible=false; give('tongs'); },700); }); }},
+ {id:'rivetdig', t:'리벳 이음 강판', who:'잔해밭의 리벳 이음 강판', verb:'진흙 뒤지기', pos:[-9.6,-14.2], show:()=>true, done:()=>has('rivet'),
+  act(){ if(has('rivet')) return say([['조사관','리벳은 이미 주웠다. 구멍이 줄지어 비어 있다.',420]]);
+    if(!has('tongs')) return say([['조사관','판 가장자리 리벳 구멍이 많이 비어 있다. 진흙 속에 뭔가 반짝이는데, 두꺼운 장갑으로는 집을 수가 없다.',420]]);
+    searching={t:0, fin:()=>{ clockGlint.visible=false; clockMesh.visible=false; give('rivet'); }}; paused=true; keys={}; blip(300,.2,'triangle',.06); }},
+ {id:'section', t:'시편 상자', who:'잠수정 시편 상자', verb:'리벳 잘라 보기', pos:[34.6,-26.6], show:()=>true, done:()=>flags.section,
+  act(){ if(!has('rivet')&&!flags.section) return say([['조사관','작은 절단기와 연마기가 들어 있는 상자다. 자를 시료가 있어야 한다.',420]]); startInspect(); }},
+ {id:'sonar', t:'음파 탐지기', who:'선수 오른쪽 음파 탐지기', verb:'옆판 훑기', pos:[11.1,85.4], show:()=>true, done:()=>flags.sonar,
+  act(){ if(flags.sonar) return say([['조사관','이미 훑었다. 틈은 앞쪽 여섯 구획에 걸쳐 있었다.',420]]); sonarGame(); }},
+ {id:'compart', t:'위치 표지 부표', who:'위치 표지 부표 무전', verb:'교신하기', pos:[-22,12.4], show:()=>true, done:()=>has('compart'),
+  act(){ say([['지원선 · 선박 공학자','이 배는 방수 구획 16개로 나뉘어 있었습니다. 앞쪽 네 구획까지는 물이 차도 뜨도록 설계됐지요.',280],
+    ['지원선 · 선박 공학자','문제는 칸막이벽이 맨 위 갑판까지 올라가지 않았다는 겁니다. 앞이 가라앉으면 물이 벽을 넘어 다음 칸으로 넘어갑니다.',280]], ()=>give('compart')); }},
+ {id:'myth', t:'부표 무전', who:'위치 표지 부표 무전', verb:'교신하기', pos:[-26,-27.6], show:()=>true, done:()=>has('myth'),
+  act(){ say([['지원선 · 기자','1912년 신문들은 빙산이 옆구리를 100 m 가까이 길게 찢었다고 썼지요. 다들 그렇게 믿었습니다.',380],['조사관','그 구멍을 직접 본 사람이 있었소?',420],['지원선 · 기자','…없었습니다. 선수부는 수십 년 동안 진흙에 묻혀 있었으니까요.',380]], ()=>give('myth')); }},
+ {id:'speed', t:'기관 전령기', who:'잔해밭의 기관 전령기', verb:'살펴보기', pos:[-16.2,-42.2], show:()=>true, done:()=>has('speed'),
+  act(){ say([['조사관','선교의 기관 전령기다. 바늘이 전속 전진 근처에 있다.',420],['지원선 · 기록 담당','빙산 경고를 여러 번 받고도 거의 최고 속도로 달리고 있었습니다.',320]], ()=>give('speed')); }},
+ {id:'plate', t:'선체 조각', who:'잔해밭의 큰 선체 조각', verb:'가장자리 보기', pos:[5.2,-35.6], show:()=>true, done:()=>has('plate'),
+  act(){ say([['조사관','깨진 가장자리가 평평하다. 휘지 않고 단번에 깨졌다.',420]], ()=>give('plate')); }},
+ {id:'case', t:'분석 보고함', who:'잠수정 앞 분석 보고함', verb:'자물쇠 풀기', pos:[30.6,-17.2], show:()=>true, done:()=>flags.case,
+  act(){ if(flags.case) return say([['조사관','서류는 이미 꺼냈다.',420]]); seqLock(()=>{ flags.case=true; chestOpenT=0; chestLid.userData.lock.visible=false; setTimeout(()=>give(['charpy','chem']),600); }); }},
+ {id:'final', t:'원격 청문회', who:'잠수정 해치 무전 단말', verb:'청문회 열기', pos:[26.6,-24], show:()=>true, done:()=>finished,
+  act(){ if(finished) return verdict(); if(!flags.section) return say([['지원선 · 조사 책임자','증거 없이 보고할 셈이오? 회수한 시료부터 직접 들여다보시오.',230]]);
+    startHearing(); }}
+];
+const spots = OBJS.map(o=>{ const [x,z]=o.pos, y=gh(x,z), g=new T.Group();
   const m=new T.MeshStandardMaterial({color:0xe2b257,emissive:0xe2a23a,emissiveIntensity:1.6,roughness:.4});
-  const d=mesh(new T.OctahedronGeometry(.22),m,0,2.6,0,g); d.castShadow=false; const r=mesh(new T.RingGeometry(.75,.9,32),new T.MeshBasicMaterial({color:0xe2b257,transparent:true,opacity:.75,side:T.DoubleSide,depthWrite:false}),0,.06,0,g); r.rotation.x=-Math.PI/2; r.castShadow=false;
-  g.position.set(x,y,z); scene.add(g); const el=document.createElement('div'); el.className='lbl'; $('labels').appendChild(el); return {a,g,d,r,m,el,x,z}; });
+  const d=mesh(new T.OctahedronGeometry(.22),m,0,2.6,0,g); d.castShadow=false; const r=mesh(new T.RingGeometry(.65,.78,32),new T.MeshBasicMaterial({color:0xe2b257,transparent:true,opacity:.75,side:T.DoubleSide,depthWrite:false}),0,.06,0,g); r.rotation.x=-Math.PI/2; r.castShadow=false;
+  g.position.set(x,y,z); scene.add(g); const el=document.createElement('div'); el.className='lbl'; $('labels').appendChild(el); return {o,g,d,r,m,el,x,z}; });
 
 /* ================= 입력 ================= */
 let keys = {}, camYaw = Math.PI, camPitch = .28, camDist = 7.5, joy = {x:0,y:0}, near = null;
@@ -646,7 +786,7 @@ addEventListener('keydown', e=>{ if(e.target.tagName==='INPUT') return; if(e.cod
   if(insp){ if(e.code==='Escape') endInspect(); return; }
   if(dq){ if(['KeyE','Enter','Space'].includes(e.code)){ advance(); e.preventDefault(); } return; }
   if(paused) return; keys[e.code]=true; if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault();
-  if(e.code==='KeyE'||e.code==='Enter') interact(); if(e.code==='KeyN') showNote(); });
+  if(e.code==='KeyE'||e.code==='Enter') interact(); if(e.code==='KeyN') showNote(); if(e.code==='KeyH') showHint(); });
 addEventListener('keyup', e=>{ keys[e.code]=false; }); addEventListener('blur', ()=>{ keys={}; });
 let drag=null; canvas.addEventListener('pointerdown', e=>{ drag={x:e.clientX,y:e.clientY,id:e.pointerId}; canvas.setPointerCapture(e.pointerId); canvas.focus(); });
 canvas.addEventListener('pointermove', e=>{ if(!drag||e.pointerId!==drag.id) return; camYaw -= (e.clientX-drag.x)*.006; camPitch = Math.max(-.1,Math.min(1.1,camPitch+(e.clientY-drag.y)*.004)); drag.x=e.clientX; drag.y=e.clientY; });
@@ -656,7 +796,7 @@ canvas.addEventListener('wheel', e=>{ camDist=Math.max(3.5,Math.min(16,camDist+e
   st.addEventListener('pointerdown', e=>{ id=e.pointerId; st.setPointerCapture(id); set(e); }); st.addEventListener('pointermove', e=>{ if(e.pointerId===id) set(e); });
   const end=()=>{ id=null; joy.x=joy.y=0; nub.style.transform=''; }; st.addEventListener('pointerup',end); st.addEventListener('pointercancel',end);
   $('tJump').addEventListener('pointerdown', ()=>{ keys.Space=true; setTimeout(()=>keys.Space=false,120); }); $('tAct').onclick=()=>{ if(dq) advance(); else if(!paused) interact(); }; }
-function interact(){ if(!near) return; const a=near.a; if(a.id==='report') say(a.pre, showReport); else if(done.has(a.id)){ if(a.id==='surface') startInspect(a); else showAct(a); } else say(a.pre, ()=>showAct(a)); }
+function interact(){ if(!near||searching||finished&&near.o.id!=='final') return; near.o.act(); }
 $('bStart').onclick = ()=>{ $('title').hidden=true; started=true; canvas.focus(); initSound(); startCine(); };
 
 
@@ -665,7 +805,7 @@ const SHOTS=[
  {d:6.5, p0:[42,46,-36], p1:[34,24,4], l0:[0,10,50], l1:[0,13,70], s:'1912년 4월 15일 새벽, 타이타닉호는 북대서양 아래로 사라졌다.'},
  {d:6, p0:[9,24,132], p1:[4,21.5,121], l0:[0,19,104], l1:[0,18.5,96], s:'수심 3,700 m 남짓. 선수부는 진흙에 박힌 채 똑바로 서 있다.'},
  {d:6, p0:[-26,6,-52], p1:[-16,4.5,-38], l0:[-10,1,-26], l1:[-4,.8,-20], s:'갈라진 선체 사이로 잔해밭이 펼쳐진다. 리벳과 강판 조각이 진흙 위에 흩어져 있다.'},
- {d:5.5, p0:[19,4,-43], p1:[20,3.6,-41.5], l0:[25,1.9,-34], l1:[27,2,-27], s:'배는 왜 그렇게 빨리 물에 잠겼을까. 쓸 수 있는 조사 점수는 8점이다.'}];
+ {d:5.5, p0:[19,4,-43], p1:[20,3.6,-41.5], l0:[25,1.9,-34], l1:[27,2,-27], s:'배는 왜 그렇게 빨리 물에 잠겼을까. 제한 시간은 15분이다.'}];
 let cine=null;
 function cineSub(){ $('sub').textContent=SHOTS[cine.i].s; $('sub').hidden=false; subT=0; }
 function startCine(){ cine={i:0,t:0}; paused=true; document.body.classList.add('cine'); ['lbT','lbB','skip'].forEach(i=>$(i).hidden=false); cineSub(); }
@@ -673,20 +813,30 @@ function endCine(){ if(!cine) return; cine=null; paused=false; document.body.cla
   ['top','btns','keys','stick','tbtn'].forEach(i=>$(i).hidden=false); hud(); canvas.focus(); }
 $('skip').onclick = endCine;
 
-/* ================= 파단면 관찰 ================= */
-const INSP=[['검은 줄무늬','몸통을 따라 검은 줄무늬가 빽빽하게 늘어서 있다. 연철 속에 섞인 슬래그다. 보통보다 훨씬 많아 보인다.'],['꺾이는 결','머리 쪽으로 가면 줄무늬가 거의 직각으로 꺾여 머리 둘레를 따라 돈다. 몸통과 머리의 결이 서로 엇갈린다.'],['머리 밑 균열','몸통과 머리가 만나는 곳에 금이 가 있다. 결이 꺾인 바로 그 자리다. 여기서 머리가 떨어져 나간다.']];
-const inspPts=[[-.13,.025],[.16,.075],[.1,-.1]].map(([x,y])=>new T.Vector3(x,y,.003));
+/* ================= 리벳 단면 관찰 ================= */
+const OBS=[['검은 줄무늬','몸통을 따라 검은 줄무늬가 빽빽하게 늘어서 있다. 연철 속에 섞인 슬래그다. 보통보다 훨씬 많아 보인다.',[-.13,.025]],
+ ['꺾이는 결','머리 쪽으로 가면 줄무늬가 거의 직각으로 꺾여 머리 둘레를 따라 돈다. 몸통과 머리의 결이 서로 엇갈린다.',[.16,.075]],
+ ['머리 밑 금','몸통과 머리가 만나는 곳 아래쪽에 가느다란 금이 있다. 결이 꺾인 바로 그 자리다.',[.1,-.1]]];
+const PICK=[['가',[-.2,-.02]],['나',[.1,-.05]],['다',[.2,.02]],['라',[-.05,.03]]], PICK_OK=1;
 const INSP_D=.62, INSP_SW=.35, INSP_V=.22;
+const inspPts=OBS.map(o=>new T.Vector3(o[2][0],o[2][1],.003)).concat(PICK.map(p=>new T.Vector3(p[1][0],p[1][1],.003)));
 const inspLight=new T.PointLight(0xfff0d8,1.3,3,2); inspLight.visible=false; scene.add(inspLight);
 let insp=null;
-const mks=INSP.map((_,k)=>{ const b=document.createElement('button'); b.type='button'; b.className='mk'; b.textContent=k+1; b.hidden=true; b.setAttribute('aria-label',INSP[k][0]); b.onclick=()=>inspShow(k); document.body.appendChild(b); return b; });
-function inspShow(i){ if(i>=0){ insp.seen.add(i); blip(520+i*90,.14); } $('ititle').textContent=i<0?'파단면 관찰':(i+1)+'. '+INSP[i][0];
-  $('itxt').textContent=i<0?'번호가 붙은 세 곳을 눌러 살펴보세요. 마우스를 움직이면 보는 각도가 바뀝니다.':INSP[i][1]; $('idone').disabled=insp.seen.size<3; mks.forEach((m,k)=>m.classList.toggle('seen',insp.seen.has(k))); }
-function startInspect(a){ if(!fracFace){ showAct(a); return; } insp={a,seen:new Set(),mx:0,my:0}; paused=true; keys={}; player.g.visible=false; if(player.hat) player.hat.visible=false;
-  ['top','btns','keys','stick','tbtn','prompt'].forEach(i=>$(i).hidden=true); $('insp').hidden=false; $('vig').hidden=false; inspLight.visible=true; inspShow(-1); }
-function endInspect(){ if(!insp) return; const a=insp.a; insp=null; paused=false; player.g.visible=true; $('insp').hidden=true; $('vig').hidden=true; mks.forEach(m=>m.hidden=true); inspLight.visible=false;
-  ['top','btns','keys','stick','tbtn'].forEach(i=>$(i).hidden=false); sub(a.post,'조사관'); canvas.focus(); }
-$('idone').onclick = endInspect;
+const mks=OBS.map((o,k)=>[String(k+1),o[0]]).concat(PICK.map(p=>[p[0],'끊어지는 곳 후보 '+p[0]])).map(([l,a],k)=>{ const b=document.createElement('button'); b.type='button'; b.className='mk'+(k>=3?' pick':''); b.textContent=l; b.hidden=true; b.setAttribute('aria-label',a); b.onclick=()=>inspClick(k); document.body.appendChild(b); return b; });
+function inspSet(){ mks.forEach((m,k)=>{ m.dataset.on=(insp&&(insp.phase===1?k<3:k>=3))?'1':''; m.classList.toggle('seen',insp&&k<3&&insp.seen.has(k)); }); }
+function inspClick(k){ if(!insp) return;
+  if(insp.phase===1&&k<3){ insp.seen.add(k); blip(520+k*90,.14); $('ititle').textContent=(k+1)+'. '+OBS[k][0]; $('itxt').textContent=OBS[k][1];
+    if(insp.seen.size===3){ $('idone').disabled=false; $('idone').textContent='끊어지는 곳 고르기'; } inspSet(); return; }
+  if(insp.phase===2&&k>=3){ if(k-3===PICK_OK){ flags.section=true; blip(780,.3); endInspect(); give('section'); }
+    else { miss++; timeLeft=Math.max(0,timeLeft-15); hud(); blip(160,.35,'sawtooth',.12); $('itxt').textContent=`${PICK[k-3][0]}는 아니다. 결이 꺾이고 금이 간 곳을 다시 보자. (15초 줄어듦)`; } } }
+function startInspect(){ if(!fracFace) return; insp={phase:flags.section?2:1,seen:new Set(),mx:0,my:0}; paused=true; keys={}; player.g.visible=false; if(player.hat) player.hat.visible=false;
+  ['top','btns','keys','stick','tbtn','prompt'].forEach(i=>$(i).hidden=true); $('insp').hidden=false; $('vig').hidden=false; inspLight.visible=true;
+  $('ititle').textContent='세로로 잘라 닦은 리벳 단면'; $('itxt').textContent='번호가 붙은 세 곳을 눌러 살펴보세요. 마우스를 움직이면 보는 각도가 바뀝니다.'; $('idone').disabled=true; $('idone').textContent='세 곳을 모두 보세요';
+  if(insp.phase===2) toPick(); inspSet(); }
+function toPick(){ insp.phase=2; $('ititle').textContent='빙산이 스칠 때 리벳은 어디서 끊어졌을까?'; $('itxt').textContent='가, 나, 다, 라 가운데 리벳이 끊어지는 곳을 누르세요. 틀리면 15초가 줄어듭니다.'; $('idone').disabled=false; $('idone').textContent='나가기'; inspSet(); }
+function endInspect(){ if(!insp) return; insp=null; paused=false; player.g.visible=true; if(player.hat) player.hat.visible=true; $('insp').hidden=true; $('vig').hidden=true; mks.forEach(m=>{ m.hidden=true; m.dataset.on=''; }); inspLight.visible=false;
+  ['top','btns','keys','stick','tbtn'].forEach(i=>$(i).hidden=false); canvas.focus(); }
+$('idone').onclick = ()=>{ if(insp&&insp.phase===1&&insp.seen.size===3) toPick(); else endInspect(); };
 addEventListener('pointermove', e=>{ if(insp){ insp.mx=e.clientX/innerWidth-.5; insp.my=e.clientY/innerHeight-.5; } });
 
 /* ================= 소리(코드로 합성, 파일 없음) ================= */
@@ -733,7 +883,7 @@ function tick(){ const dt=Math.min(.05,clock.getDelta()), t=clock.elapsedTime;
     if(cine.t>=S.d){ cine.i++; cine.t=0; if(cine.i>=SHOTS.length) endCine(); else cineSub(); } }
   else if(insp){ fracFace.getWorldPosition(va); fracFace.getWorldDirection(vb); const k=1-Math.pow(.002,dt);
     v3.set(vb.z,0,-vb.x).multiplyScalar(insp.mx*INSP_SW).addScaledVector(vb,INSP_D).add(va); v3.y+=.05-insp.my*INSP_V; camPos.lerp(v3,k); look.lerp(va,k); inspLight.position.copy(camPos);
-    mks.forEach((m,i)=>{ v3.copy(inspPts[i]); fracFace.localToWorld(v3); v3.project(camera); m.hidden=false; m.style.left=((v3.x+1)/2*innerWidth)+'px'; m.style.top=((1-v3.y)/2*innerHeight)+'px'; }); }
+    mks.forEach((m,i)=>{ v3.copy(inspPts[i]); fracFace.localToWorld(v3); v3.project(camera); m.hidden=!m.dataset.on; m.style.left=((v3.x+1)/2*innerWidth)+'px'; m.style.top=((1-v3.y)/2*innerHeight)+'px'; }); }
   else if(started){ const cp=Math.cos(camPitch); v3.set(player.pos.x+Math.sin(camYaw)*cp*camDist, player.pos.y+1.7+Math.sin(camPitch)*camDist, player.pos.z+Math.cos(camYaw)*cp*camDist);
     { const hx=player.pos.x, hy=player.pos.y+1.6, hz=player.pos.z; for(let f=.15;f<=1.001;f+=.05){ const x=hx+(v3.x-hx)*f, y=hy+(v3.y-hy)*f, z=hz+(v3.z-hz)*f, g=groundAt(x,z); if(g!==null&&g>y-.35){ const k=Math.max(.12,f-.08); v3.set(hx+(v3.x-hx)*k, hy+(v3.y-hy)*k, hz+(v3.z-hz)*k); break; } } }
     v3.y=Math.max(v3.y, gh(v3.x,v3.z)+.5); camPos.lerp(v3,1-Math.pow(.0005,dt)); look.lerp(v3.set(player.pos.x,player.pos.y+1.55,player.pos.z),1-Math.pow(.00005,dt)); }
@@ -746,14 +896,21 @@ function tick(){ const dt=Math.min(.05,clock.getDelta()), t=clock.elapsedTime;
   for(let i=0;i<embN;i++){ eLife[i]+=dt*.35; if(eLife[i]>1) eLife[i]-=1; const s=sSrc[i%2], l=eLife[i]; ePos[i*3]=s[0]+Math.sin(i*3.1+t+l*5)*(.2+l*.4); ePos[i*3+1]=s[1]-.2+l*9; ePos[i*3+2]=s[2]+Math.cos(i*1.3+l*4)*(.4+l); }
   embG.attributes.position.needsUpdate=true; worldTick(dt,t);
   fires.forEach((f,i)=>{ const k=.75+Math.sin(t*9+i*2)*.15+Math.sin(t*23+i)*.1; f.l.intensity=1.6*k; f.s.scale.set(1.1*k,1.5*k,1); });
-  /* 표식, 안내 */
-  near=null; let best=2.8;
-  for(const s of spots){ const isDone=done.has(s.a.id); s.d.position.y=2.6+Math.sin(t*2+s.x)*.12; s.d.rotation.y=t*1.5; s.r.scale.setScalar(1+Math.sin(t*3+s.z)*.06);
-    s.m.emissiveIntensity=isDone?.15:1.6; s.m.color.setHex(isDone?0x7d8a92:0xe2b257); s.r.material.opacity=isDone?.25:.75;
-    const d=Math.hypot(player.pos.x-s.x,player.pos.z-s.z); if(d<best){ best=d; near=s; }
-    v3.set(s.x,s.g.position.y+3.1,s.z).project(camera); const show=started&&!cine&&!insp&&v3.z<1&&d<34&&Math.abs(v3.x)<1.05&&Math.abs(v3.y)<1.05;
-    s.el.hidden=!show; if(show){ s.el.style.left=((v3.x+1)/2*innerWidth)+'px'; s.el.style.top=((1-v3.y)/2*innerHeight)+'px'; s.el.className='lbl'+(isDone?' done':''); s.el.textContent=(isDone?'✓ ':'')+s.a.t+(s.a.c&&!isDone?' · '+s.a.c+'점':''); } }
-  const pr=$('prompt'); if(near&&!paused){ pr.hidden=false; pr.innerHTML=`<kbd>E</kbd>${near.a.who} · ${near.a.id==='report'?'보고서 제출':done.has(near.a.id)?'결과 다시 보기':near.a.t}`; } else pr.hidden=true;
+  /* 표식, 안내, 시간 (시간은 실제 흐른 시간으로 잰다) */
+  const nowT=performance.now(), rdt=Math.min(1,(nowT-(tick.lastT||nowT))/1000); tick.lastT=nowT;
+  if(toolOpenT>=0&&toolOpenT<1){ toolOpenT=Math.min(1,toolOpenT+dt*1.5); toolLid.rotation.x=-1.6*(1-Math.pow(1-toolOpenT,3)); toolLid.userData.torch.visible=!has('torch'); }
+  if(chestOpenT>=0&&chestOpenT<1){ chestOpenT=Math.min(1,chestOpenT+dt*1.5); chestLid.rotation.x=-1.5*(1-Math.pow(1-chestOpenT,3)); }
+  clockGlint.material.opacity=.4+.6*Math.max(0,Math.sin(t*3));
+  if(searching){ searching.t+=rdt; if(searching.t>=1.4){ const f=searching.fin; searching=null; paused=false; f(); } }
+  if(started&&!cine&&!finished){ timeLeft-=rdt; if(timeLeft<=0){ timeLeft=0; if(!timeUpSaid){ timeUpSaid=true; sub('제한 시간이 지났다. 계속 조사할 수 있지만 점수가 깎인다.'); } } const sec=Math.ceil(timeLeft); if(sec!==tick.sec){ tick.sec=sec; $('timer').textContent=fmt(timeLeft); $('timer').classList.toggle('low',timeLeft<120); } }
+  near=null; let best=2.6;
+  for(const s of spots){ const o=s.o, vis=o.show(), isDone=o.done(); s.g.visible=vis&&!isDone;
+    s.d.position.y=2.5+Math.sin(t*2+s.x)*.12; s.d.rotation.y=t*1.5; s.r.scale.setScalar(1+Math.sin(t*3+s.z)*.06);
+    const d=Math.hypot(player.pos.x-s.x,player.pos.z-s.z); if(vis&&d<best){ best=d; near=s; }
+    v3.set(s.x,s.g.position.y+3.0,s.z).project(camera); const show=vis&&started&&!cine&&!insp&&v3.z<1&&d<(isDone?10:34)&&Math.abs(v3.x)<1.05&&Math.abs(v3.y)<1.05;
+    s.el.hidden=!show; if(show){ s.el.style.left=((v3.x+1)/2*innerWidth)+'px'; s.el.style.top=((1-v3.y)/2*innerHeight)+'px'; s.el.className='lbl'+(isDone?' done':''); s.el.textContent=(isDone?'✓ ':'')+o.t; } }
+  const pr=$('prompt'); if(searching){ pr.hidden=false; pr.innerHTML=`뒤지는 중<span class="bar"><i style="width:${Math.min(100,searching.t/1.4*100)}%"></i></span>`; }
+  else if(near&&!paused){ pr.hidden=false; pr.innerHTML=`<kbd>E</kbd>${near.o.who} · ${near.o.verb}`; } else pr.hidden=true;
   if(composer) composer.render(); else renderer.render(scene,camera); requestAnimationFrame(tick); }
 initPost();
 try{ /* 금속에만 은은한 하늘 반사를 준다 */

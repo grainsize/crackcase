@@ -93,6 +93,12 @@ body.cine #sub{bottom:calc(11vh + 16px)}
 #tbtn button{width:64px;height:64px;border-radius:50%;padding:0}
 @media (pointer:coarse){#keys{display:none}#prompt{bottom:160px}}
 @media (pointer:fine){#stick,#tbtn{display:none}}
+.claim{margin:10px 0;padding:12px 14px;border-left:3px solid #e04a3a;background:rgba(224,74,58,.08);font-family:'Noto Serif KR',serif;font-size:1.05rem}
+.evid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:10px 0}
+.ev{display:flex;flex-direction:column;gap:4px;text-align:left;padding:10px;border-radius:6px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:inherit;font:inherit;cursor:pointer}
+.ev:hover,.ev:focus-visible{border-color:var(--brass);background:rgba(226,178,87,.12)}
+.ev b{color:var(--brass);font-size:.92rem}.ev small{color:var(--muted);font-size:.76rem;line-height:1.35}
+#fade{transition:opacity .35s}
 .btnlink{display:inline-block;font:inherit;font-weight:600;text-decoration:none;border-radius:4px;border:1px solid var(--brass);background:var(--brass);color:#1b1408;padding:8px 16px}
 .btnlink.ghost{background:transparent;color:var(--brass)}
 #btns .btnlink{padding:6px 12px}
@@ -201,7 +207,7 @@ function goalText(){
   if(!has('lens')) return '파단면을 들여다볼 확대경이 필요합니다. 누가 잃어버렸을까요?';
   if(!flags.origin) return '창고 안 차축의 파단면을 살피고, 균열이 시작된 곳을 짚으세요.';
   if(!flags.chest) return '서기 천막의 서류함을 여세요. 자물쇠 그림에 순서가 있습니다.';
-  return '조사위원회 천막의 보고 상자를 여세요. 원인, 시작점, 대책을 모두 맞혀야 열립니다.'; }
+  return '조사위원회 천막에서 청문회를 여세요. 엉뚱한 주장이 나올 때마다 알맞은 증거를 내밀어 뒤집어야 합니다.'; }
 const fmt = s => { s=Math.max(0,Math.ceil(s)); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); };
 /* ================= UI ================= */
 function hud(){
@@ -226,7 +232,7 @@ function showHint(){ if(finished) return;
       : !has('lens')?'철도 기술자가 확대경을 잃어버렸다고 합니다. 불탄 객차 옆 잔해 더미를 뒤져 보세요.'
       : !flags.origin?'물결 줄무늬는 균열이 멈칫거리며 자란 자국입니다. 줄무늬가 동심원처럼 모여드는 한 점을 찾으세요.'
       : !flags.chest?'파괴는 작은 시작점에서 출발해, 줄무늬를 남기며 자라고, 마지막에 거칠게 끊어집니다.'
-      : '원인은 수첩의 회전 굽힘과 운행 장부에, 시작점은 파단면 스케치에, 대책은 의견서에 있습니다.';
+      : '청문회에서는 상대 주장과 정면으로 부딪치는 증거를 고르세요. 증거가 모자라면 잠시 휴정하고 현장을 더 둘러봐도 됩니다. 수첩(N)에서 모은 단서를 다시 읽어 보세요.';
     openModal(`<div class="eb">힌트</div><h2>${goalText()}</h2><p>${H}</p><div class="row"><button data-close type="button">닫기</button></div>`); }; }
 
 /* 자물쇠 1: 숫자 다이얼 */
@@ -278,7 +284,7 @@ function verdict(){
   const tl=Math.max(0,timeLeft), score=Math.max(10,Math.min(100,Math.round(60+40*tl/TIME_LIMIT)-miss*4-hints*6));
   try{ const k='mt-score-1'; if(score>(+localStorage.getItem(k)||0)) localStorage.setItem(k,score); localStorage.setItem('mt-done-1','1'); }catch(e){}
   openModal(`<div class="eb">${score>=90?'수석 조사관':score>=70?'조사관':'수습 조사관'}</div><div class="score">${score}<span style="font-size:1rem;color:var(--muted)"> / 100점</span></div>
-    <p>걸린 시간 ${fmt(TIME_LIMIT-tl)}${timeLeft<=0?' (제한 시간 초과)':''} · 자물쇠 실수 ${miss}번 · 힌트 ${hints}번</p>
+    <p>걸린 시간 ${fmt(TIME_LIMIT-tl)}${timeLeft<=0?' (제한 시간 초과)':''} · 실수 ${miss}번 · 힌트 ${hints}번</p>
     <div class="fb"><b>원인 · 피로</b><br>매끈한 면의 줄무늬는 균열이 오랜 시간 조금씩 자란 흔적이고, 거친 면은 남은 단면이 버티지 못해 한 번에 끊어진 자리입니다.</div>
     <div class="fb"><b>시작점 · 저널 어깨 모서리</b><br>지름이 갑자기 바뀌는 모서리에는 응력이 몰립니다. 회전 굽힘에서는 표면 응력이 가장 크므로 균열은 표면에서 시작해 안으로 자랍니다.</div>
     <div class="fb"><b>대책 · 둥근 모서리와 수명 관리</b><br>모서리를 둥글게 하면 응력집중이 줄고, 달린 거리를 관리하면 균열이 위험한 크기로 자라기 전에 바꿀 수 있습니다.</div>
@@ -286,6 +292,45 @@ function verdict(){
     <p class="src"><span class="tag" style="margin:0 6px 0 0">재구성</span>자물쇠, 소지품, 대사, 운행 장부와 의견서의 내용은 게임을 위해 만든 것입니다. 자료: <a href="https://en.wikipedia.org/wiki/Versailles_rail_accident">Wikipedia, Versailles rail accident</a> · Rankine (1843), Minutes of the Institution of Civil Engineers · Sendeckyj (2006)</p>
     <div class="row"><a class="btnlink" href="ch2.html">다음 사건</a><a class="btnlink ghost" href="index.html">사건 목록</a><button id="again" type="button" class="ghost">처음부터 다시</button></div>`);
   $('again').onclick=()=>location.reload(); }
+/* 1화 청문회 대본 */
+const HEAR={
+ open:[['조사위원','지금부터 베르사유 철도 참사 조사 청문회를 엽니다. 철도 회사와 기술자 측 의견을 먼저 듣고, 조사관이 증거로 답하시오.',230]],
+ rounds:[
+  {who:'철도 회사 이사', p:200, sum:'기관사가 과속했소. 한순간 큰 힘이 걸려 차축이 부러진 거요.',
+   claim:[['철도 회사 이사','유감스러운 일이지만 원인은 분명하오. 축제 손님을 싣고 서두르던 기관사가 속도를 냈고, 한순간에 큰 힘이 걸려 차축이 부러졌소.',200]],
+   ok:['sketch','ledger'], no:'그런 걸로는 과속이 아니었다는 증명이 안 되오.',
+   win:{sketch:[['조사관','차축 파단면입니다. 대부분이 매끈하고 물결 같은 줄무늬가 겹겹이 있습니다. 한순간에 부러졌다면 단면 전체가 거칠어야 합니다.',420],['조사관','이 줄무늬는 균열이 오랜 시간 조금씩 자란 흔적입니다. 거친 부분은 마지막 순간에 남은 단면뿐이에요.',420],['철도 회사 이사','으음… 그, 그건…',200]],
+        ledger:[['조사관','회사 운행 장부입니다. 이 차축은 몇 해 동안 3만 km를 달렸고, 굽힘이 천만 번 가까이 뒤집혔습니다. 그날 하루의 속도가 아니라 쌓인 횟수가 문제입니다.',420],['철도 회사 이사','으음… 장부를 그렇게 읽으면…',200]]}},
+  {who:'철도 기술자', p:250, sum:'쇠가 오랜 진동에 결정질로 변해 유리처럼 깨진 거요.',
+   claim:[['철도 기술자','과속은 아니라 칩시다. 그렇다면 답은 하나요. 쇠가 오랜 진동에 결정질로 변해 버린 거요. 단면에 반짝이는 결정이 보이지 않소?',250]],
+   ok:['crank','ledger'], no:'그건 결정질 이야기와는 상관이 없지 않소?', lose:{sketch:'그 단면 반짝이는 것 보시오. 바로 결정질의 증거요!'},
+   win:{crank:[['조사관','회전 굽힘 모형으로 확인했습니다. 휘어진 채 도는 축의 표면 한 점은 한 바퀴마다 당겨졌다가 눌립니다. 쇠가 변한 게 아니라, 같은 쇠가 끝없이 반복해서 당겨진 겁니다.',420],['조사관','반짝이는 건 마지막에 한꺼번에 끊어진 부분뿐입니다. 쇠는 처음부터 결정으로 이뤄져 있었어요.',420],['철도 기술자','결정질로 변한 게 아니라… 반복 때문이라고?',250]],
+        ledger:[['조사관','장부대로라면 굽힘이 천만 번 가까이 뒤집혔습니다. 쇠의 성질이 바뀐 게 아니라, 작은 힘이 천만 번 반복된 겁니다.',420],['철도 기술자','작은 힘도 반복되면… 흠.',250]]}},
+  {who:'철도 회사 이사', p:200, sum:'그렇다면 처음부터 불량한 쇠였겠지. 어디서든 깨질 수 있었소.',
+   claim:[['철도 회사 이사','좋소, 반복이라 칩시다. 그래도 처음부터 속에 흠이 있던 불량품이었을 거요. 그럼 대장간 책임이지 우리 책임은 아니오.',200]],
+   ok:['sketch','memo'], no:'그걸로 불량품이 아니라는 증명이 되오?',
+   win:{sketch:[['조사관','줄무늬가 모이는 시작점은 단면 속이 아니라 바깥 표면, 지름이 갑자기 줄어드는 어깨 모서리입니다. 속에 숨은 흠에서 시작하지 않았어요.',420],['철도 회사 이사','모서리라니…',200]],
+        memo:[['조사관','기술자들의 의견서입니다. 부러진 차축들은 늘 지름이 갑자기 줄어드는 같은 모서리에서 끊어졌습니다. 불량품이라면 아무 데서나 깨졌겠지요.',420],['철도 회사 이사','늘 같은 자리에서…',200]]}},
+  {who:'조사위원', p:230, sum:'원인은 알았소. 그럼 앞으로 이런 일을 어떻게 막겠소?',
+   claim:[['조사위원','조사관의 설명은 잘 들었소. 마지막으로 묻겠소. 같은 일이 다시 일어나지 않게 하려면 어떻게 해야 하오?',230]],
+   ok:['memo'], ask:'대책이 적힌 증거를 내미세요.', no:'그것만으로는 대책이 되지 않소.',
+   win:{memo:[['조사관','의견서에 답이 있습니다. 모서리를 큰 곡선으로 깎아 힘이 몰리지 않게 하고, 차축이 달린 거리를 적어 두었다가 균열이 커지기 전에 정해진 때 바꾸는 겁니다.',420],['조사위원','더 단단한 쇠도, 느린 열차도 아니라… 모양과 관리로군.',230]]}}],
+ end:[['조사위원','청문회 결론을 내리겠소. 차축은 과속도, 결정질화도, 불량품도 아닌 반복 하중으로 자란 균열 때문에 부러졌소.',230],['철도 기술자','…쇠는 지친다. 우리가 그걸 몰랐군요.',250],['조사관','그 지침을 사람들은 훗날 피로라고 부르게 됩니다.',420]]};
+
+/* ================= 청문회: 증거 제시 ================= */
+let hearIdx = 0;
+function startHearing(){ hearIdx = Math.min(hearIdx, HEAR.rounds.length);
+  if(hearIdx===0&&!flags.hearOpen){ flags.hearOpen=true; say(HEAR.open, ()=>hearRound()); } else hearRound(); }
+function hearRound(){ const r=HEAR.rounds[hearIdx]; if(!r) return hearEnd(); say(r.claim, ()=>hearPresent()); }
+function hearPresent(){ const r=HEAR.rounds[hearIdx];
+  const cards=inv.map(k=>`<button type="button" class="ev" data-k="${k}"><b>${ITEMS[k].n}</b><small>${ITEMS[k].d.slice(0,46)}${ITEMS[k].d.length>46?'…':''}</small></button>`).join('');
+  openModal(`<div class="eb">청문회 · ${hearIdx+1} / ${HEAR.rounds.length}</div><h2>${r.who}의 주장</h2><blockquote class="claim">“${r.sum}”</blockquote><p>${r.ask||'이 주장을 뒤집을 증거를 내미세요.'}</p><div class="evid" id="evid">${cards||'<p class="src">가진 증거가 없습니다.</p>'}</div><p id="lockmsg" class="src" role="status">틀린 증거를 내밀면 20초가 줄어듭니다.</p><div class="row"><button class="ghost" data-close type="button">증거를 더 찾아오겠소 (잠시 휴정)</button></div>`);
+  $('evid').onclick=e=>{ const b=e.target.closest('.ev'); if(!b) return; const k=b.dataset.k; $('modal').hidden=true;
+    if(r.ok.includes(k)){ blip(880,.12,'square',.12); blip(1320,.3,'sine',.14,.1); const flash=$('fade'); flash.style.background='#fff'; flash.style.opacity='.85'; setTimeout(()=>{ flash.style.opacity='0'; setTimeout(()=>flash.style.background='',400); },120);
+      say([['조사관','이의 있습니다!',420]].concat(r.win[k]||r.win._), ()=>{ hearIdx++; hearRound(); }); }
+    else { miss++; timeLeft=Math.max(0,timeLeft-20); hud(); blip(160,.35,'sawtooth',.12);
+      say([[r.who,(r.lose&&r.lose[k])||r.no||'그게 이 일과 무슨 상관이오? 다시 생각해 보시오.',r.p||250]], ()=>hearPresent()); } }; }
+function hearEnd(){ finished=true; hud(); blip(520,.1); blip(660,.1,'sine',.15,.1); blip(880,.4,'sine',.15,.2); say(HEAR.end, verdict); }
 /* 대사와 자막 */
 let dq=null, di=0, dchar=0, ddone=null, dtimer=0, subQ=[], subT=0, pendingPost=null;
 function showLine(){ $('dwho').textContent=dq[di][0]; dchar=0; $('dtxt').textContent=''; }
@@ -665,9 +710,9 @@ const OBJS=[
   act(){ say([['철도 회사 서기','서류함에는 회사 운행 장부와 기술자들 의견서가 들어 있습니다. 그림 자물쇠라 저도 못 엽니다.',330],['철도 회사 서기','부서짐의 순서를 아는 사람만 열 수 있다나요. 차축을 직접 들여다본 사람이라면 알겠지요.',330]], ()=>{ flags.clerk=true; hud(); }); }},
  {id:'chest', t:'서류함', who:'서기 천막의 서류함', verb:'자물쇠 풀기', pos:[9.7,-20.4], show:()=>true, done:()=>flags.chest,
   act(){ if(flags.chest) return say([['조사관','서류는 이미 꺼냈다.',420]]); seqLock(()=>{ flags.chest=true; chestOpenT=0; chestLid.userData.lock.visible=false; setTimeout(()=>give(['ledger','memo']),600); }); }},
- {id:'final', t:'보고 상자', who:'조사위원회 보고 상자', verb:'다이얼 맞추기', pos:[9.6,-30.0], show:()=>true, done:()=>finished,
+ {id:'final', t:'조사 청문회', who:'조사위원회 청문회장', verb:'청문회 열기', pos:[9.6,-30.0], show:()=>true, done:()=>finished,
   act(){ if(finished) return verdict(); if(!flags.origin) return say([['조사위원','증거도 없이 보고할 셈이오? 차축 파단면부터 보고 오시오.',230]]);
-    say([['조사위원','결론이 났소? 상자의 다이얼을 맞추면 보고서가 접수되오.',230]], finalLock); }}
+    startHearing(); }}
 ];
 const spots = OBJS.map(o=>{ const [x,z]=o.pos, y=gh(x,z), g=new T.Group();
   const m=new T.MeshStandardMaterial({color:0xe2b257,emissive:0xe2a23a,emissiveIntensity:1.6,roughness:.4});

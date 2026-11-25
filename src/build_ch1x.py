@@ -7,7 +7,13 @@ def between(a,b,new):
     global s
     i=s.index(a); j=s.index(b,i); s=s[:i]+new+s[j:]
 R=lambda f: open('/home/claude/'+f,encoding='utf-8').read()
-CSS=""".btnlink{display:inline-block;font:inherit;font-weight:600;text-decoration:none;border-radius:4px;border:1px solid var(--brass);background:var(--brass);color:#1b1408;padding:8px 16px}
+CSS=""".claim{margin:10px 0;padding:12px 14px;border-left:3px solid #e04a3a;background:rgba(224,74,58,.08);font-family:'Noto Serif KR',serif;font-size:1.05rem}
+.evid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:10px 0}
+.ev{display:flex;flex-direction:column;gap:4px;text-align:left;padding:10px;border-radius:6px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:inherit;font:inherit;cursor:pointer}
+.ev:hover,.ev:focus-visible{border-color:var(--brass);background:rgba(226,178,87,.12)}
+.ev b{color:var(--brass);font-size:.92rem}.ev small{color:var(--muted);font-size:.76rem;line-height:1.35}
+#fade{transition:opacity .35s}
+.btnlink{display:inline-block;font:inherit;font-weight:600;text-decoration:none;border-radius:4px;border:1px solid var(--brass);background:var(--brass);color:#1b1408;padding:8px 16px}
 .btnlink.ghost{background:transparent;color:var(--brass)}
 #btns .btnlink{padding:6px 12px}
 .tline{display:flex;align-items:baseline;gap:10px;margin:6px 0 2px}
@@ -49,8 +55,8 @@ rep('이동 WASD · 달리기 Shift · 점프 Space · 조사·대화 E · 시�
 rep('<button id="idone" type="button" disabled>관찰 마치기</button>','<button id="idone" type="button" disabled>세 곳을 모두 보세요</button>')
 s=re.sub(r'<p class="sub">1842년 5월 8일.*?</p>\n    <p>.*?</p>\n    <div class="row"><button id="bStart" type="button">현장으로 들어가기</button></div>',
  '<p class="sub">1842년 5월 8일, 파리로 돌아가던 열차의 선두 기관차 차축이 부러졌습니다. 다음 날 새벽, 당신은 정부 조사위원회의 조사관으로 현장에 도착했습니다.</p>\n    <p>현장 곳곳을 뒤져 단서와 물건을 찾고, 자물쇠를 풀고, 부러진 차축을 직접 들여다보세요. 제한 시간은 15분입니다. 마지막 자물쇠는 조사위원회 천막의 보고 상자이고, 원인과 시작점과 대책을 모두 맞혀야 열립니다.</p>\n    <div class="row"><button id="bStart" type="button">현장으로 들어가기</button><a class="btnlink ghost" href="index.html">사건 목록</a></div>',s,count=1,flags=re.S)
-between('/* ================= 게임 데이터 ================= */','/* ================= UI ================= */',R('ch1x_logic.js').split('function hud(){')[0])
-between('/* ================= UI ================= */','/* 대사와 자막 */','/* ================= UI ================= */\nfunction hud(){'+R('ch1x_logic.js').split('function hud(){',1)[1])
+between('/* ================= 게임 데이터 ================= */','/* ================= UI ================= */',(R('ch1x_logic.js')+R('ch1x_hear.js')+R('hearing_core.js')).split('function hud(){')[0])
+between('/* ================= UI ================= */','/* 대사와 자막 */','/* ================= UI ================= */\nfunction hud(){'+(R('ch1x_logic.js')+R('ch1x_hear.js')+R('hearing_core.js')).split('function hud(){',1)[1])
 rep("$('bNote').onclick = showNote; $('bHelp').onclick = showHelp;","$('bNote').onclick = showNote; $('bHelp').onclick = showHelp; $('bHint').onclick = showHint;")
 between('function fracTex(){','{ const g=new T.Group(); box(.5,.9,.5,mWood,0,.45,-.5,g);',R('ch1x_frac.js'))
 rep("g.position.set(6.6,0,22.6); g.rotation.y=-1.9; scene.add(g); col(6.6,22.6,1.1); }","g.position.set(-8,0,-7.3); g.rotation.y=-Math.PI/2; scene.add(g); }")
