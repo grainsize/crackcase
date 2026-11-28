@@ -80,3 +80,15 @@ function unstick(){ for(let r=.6;r<=5;r+=.4) for(let a=0;a<16;a++){ const x=play
 _r("/* ================= 루프 ================= */","/* ================= 루프 ================= */"+COL)
 _r("for(const c of colliders){ const dx=player.pos.x-c.x, dz=player.pos.z-c.z, d=Math.hypot(dx,dz), r=c.r+.35; if(d<r&&d>1e-4){ player.pos.x=c.x+dx/d*r; player.pos.z=c.z+dz/d*r; } }",
    "for(const c of colliders){ const dx=player.pos.x-c.x, dz=player.pos.z-c.z, d=Math.hypot(dx,dz), r=c.r+.3; if(d<r&&d>1e-4){ player.pos.x=c.x+dx/d*r; player.pos.z=c.z+dz/d*r; } } boxPush(dt,!paused&&(Math.abs(mx)>.15||Math.abs(mz)>.15));")
+# 4) 카톡·SNS 링크 미리보기 (Open Graph)
+_m=re.search(r"<title>재료 탐정 (\d)화 ([^<]+)</title>",s)
+if _m and 'og:image' not in s:
+    _n=_m.group(1); _t=_m.group(2)
+    _d={'1':'1842년 베르사유 열차 사고. 부러진 차축의 단면에서 피로 균열의 흔적을 찾아내세요.','2':'1943년 겨울, 부두에서 두 동강 난 배. 추위 속 강철이 왜 유리처럼 깨졌는지 밝혀내세요.','3':'해저 3,700 m, 타이타닉의 잔해. 리벳과 강판이 들려주는 그날 밤의 진실을 찾아내세요.'}[_n]
+    _meta=f'''
+<meta name="description" content="{_d}">
+<meta property="og:type" content="website"><meta property="og:site_name" content="재료 탐정 · 성효경TV">
+<meta property="og:title" content="재료 탐정 {_n}화 · {_t}"><meta property="og:description" content="{_d}">
+<meta property="og:image" content="https://crackcase.web.app/img/og{_n}.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:url" content="https://crackcase.web.app/ch{_n}.html"><meta name="twitter:card" content="summary_large_image">'''
+    s=s.replace(_m.group(0),_m.group(0)+_meta,1)
