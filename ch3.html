@@ -260,7 +260,7 @@ function showNote(){
   openModal(`<div class="eb">조사 수첩</div><h2>소지품과 단서 ${inv.length}개</h2><ul class="clues">`+
     (inv.length?inv.map(k=>`<li><b>${ITEMS[k].n}</b><br>${ITEMS[k].d}</li>`).join(''):'<li>아직 모은 것이 없습니다.</li>')+`</ul><p class="src">지금 할 일: ${goalText()}</p><div class="row"><button data-close type="button">닫기</button></div>`); }
 function showHelp(){
-  openModal(`<div class="eb">조작법</div><h2>해저를 걷는 방법</h2><p><b>키보드</b>: W(↑) 전진, S(↓) 후진, A·D(←·→)로 방향 돌리기, Shift 달리기, Space 점프, E 조사·대화·사용, N 수첩, H 힌트.</p><p><b>시점</b>: 카메라가 등 뒤에서 따라갑니다. 화면을 드래그하면 둘러볼 수 있고, 다시 움직이면 정면으로 돌아옵니다. 휠로 거리를 조절합니다. V 키나 오른쪽 위 1인칭 버튼으로 주인공 눈높이 시점으로 바꿀 수 있습니다.</p><p><b>터치</b>: 왼쪽 아래 스틱을 위아래로 밀어 전진·후진, 좌우로 밀어 방향 돌리기, 오른쪽 아래 버튼으로 점프와 조사.</p><p><b>길</b>: 잠수정과 잔해밭은 선수부 뒤쪽에 있습니다. 선수부 갑판에는 끊어진 뒤쪽 끝에서 뛰어 올라갈 수 있고, 음파 탐지기는 뱃머리 오른쪽 해저에 있습니다.</p><p><b>규칙</b>: 제한 시간 15분. 자물쇠를 틀리거나 힌트를 보면 시간이 줄어듭니다. 시간이 다 돼도 계속할 수 있지만 점수가 낮아집니다.</p><p class="src">3D 모델: Quaternius (CC0). 엔진: three.js. 글꼴: Noto Serif KR, Pretendard (SIL Open Font License 1.1).</p><div class="row"><button data-close type="button">닫기</button></div>`); }
+  openModal(`<div class="eb">조작법</div><h2>해저를 걷는 방법</h2><p><b>키보드</b>: W(↑) 전진, S(↓) 후진, A·D(←·→)로 방향 돌리기, Shift 달리기, Space 점프, E 조사·대화·사용, N 수첩, H 힌트.</p><p><b>시점</b>: 카메라가 등 뒤에서 따라갑니다. 화면을 드래그하면 둘러볼 수 있고, 다시 움직이면 정면으로 돌아옵니다. 휠로 거리를 조절합니다. V 키나 오른쪽 위 1인칭 버튼으로 주인공 눈높이 시점으로 바꿀 수 있습니다.</p><p><b>터치</b>: 왼쪽 아래 스틱을 미는 방향으로 걸어갑니다(끝까지 밀면 달리기). 화면을 손가락으로 끌면 둘러볼 수 있습니다, 오른쪽 아래 버튼으로 점프와 조사.</p><p><b>길</b>: 잠수정과 잔해밭은 선수부 뒤쪽에 있습니다. 선수부 갑판에는 끊어진 뒤쪽 끝에서 뛰어 올라갈 수 있고, 음파 탐지기는 뱃머리 오른쪽 해저에 있습니다.</p><p><b>규칙</b>: 제한 시간 15분. 자물쇠를 틀리거나 힌트를 보면 시간이 줄어듭니다. 시간이 다 돼도 계속할 수 있지만 점수가 낮아집니다.</p><p class="src">3D 모델: Quaternius (CC0). 엔진: three.js. 글꼴: Noto Serif KR, Pretendard (SIL Open Font License 1.1).</p><div class="row"><button data-close type="button">닫기</button></div>`); }
 function showHint(){ if(finished) return;
   openModal(`<div class="eb">힌트</div><h2>힌트를 볼까요?</h2><p>힌트를 보면 1분이 줄어듭니다.</p><div class="row"><button id="hYes" type="button">1분 쓰고 보기</button><button class="ghost" data-close type="button">그만두기</button></div>`);
   $('hYes').onclick=()=>{ hints++; timeLeft=Math.max(0,timeLeft-60); hud();
@@ -411,7 +411,7 @@ const camera = new T.PerspectiveCamera(55, 1, 0.1, 600);
 let composer = null;
 function resize(){ const w=innerWidth,h=innerHeight,pr=renderer.getPixelRatio(); renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); if(composer) composer.setSize(w*pr,h*pr); }
 addEventListener('resize', resize); resize();
-function initPost(){ try{ if(!(T.EffectComposer&&T.UnrealBloomPass&&T.ACESFilmicToneMappingShader&&T.GammaCorrectionShader&&T.ShaderPass&&T.RenderPass)) return;
+function initPost(){ try{ if(typeof MOBILE!=='undefined'&&MOBILE) return; if(!(T.EffectComposer&&T.UnrealBloomPass&&T.ACESFilmicToneMappingShader&&T.GammaCorrectionShader&&T.ShaderPass&&T.RenderPass)) return;
   const pr=renderer.getPixelRatio(), w=innerWidth*pr, h=innerHeight*pr, RT=renderer.capabilities.isWebGL2?T.WebGLMultisampleRenderTarget:T.WebGLRenderTarget;
   const rt=new RT(w,h,{type:T.HalfFloatType,format:T.RGBAFormat,minFilter:T.LinearFilter,magFilter:T.LinearFilter});
   const c=new T.EffectComposer(renderer,rt); c.addPass(new T.RenderPass(scene,camera)); c.addPass(new T.UnrealBloomPass(new T.Vector2(w,h),.5,.75,1.1));
@@ -918,19 +918,20 @@ function unstick(){ for(let r=.6;r<=5;r+=.4) for(let a=0;a<16;a++){ const x=play
     if(y===null||y===undefined||Math.abs(y-player.pos.y)>1.2) continue; if(typeof groundAt==='function'&&groundAt(x,z)===null) continue; if(!boxHit(x,z,y)){ player.pos.set(x,y,z); return; } } }
 
 
-let fp=false;
+let fp=false, joyMode=false;
 function toggleView(){ fp=!fp; if(!fp){ player.g.visible=true; camYaw=player.yaw+Math.PI; } camPitch=.2; const b=$('bView'); if(b){ b.textContent=fp?'3인칭':'1인칭'; b.setAttribute('aria-pressed',fp); } }
 $('bView').onclick=()=>{ toggleView(); $('gl').focus(); };
 /* 카메라 가림 방지: 머리에서 카메라까지 사이에 물체가 있으면 그 앞으로 당긴다 */
-const _rc=new T.Raycaster(), _hd=new T.Vector3(), _dir=new T.Vector3(); let occl=null, occT=0, occK=1;
+const _rc=new T.Raycaster(), _hd=new T.Vector3(), _dir=new T.Vector3(); let occl=null, occT=0, occK=1, occTgt=1;
 function occlude(v){
   if(!occl){ occl=[]; const skip=new Set([player.g]); try{ for(const c of npcs) skip.add(c.g); }catch(e){}
     scene.traverse(o=>{ if(!o.isMesh||o.isInstancedMesh||!o.geometry) return; const m=o.material; if(!m||m.transparent||m.side===T.BackSide) return;
       for(let p=o;p;p=p.parent) if(skip.has(p)) return;
       if(!o.geometry.boundingSphere) o.geometry.computeBoundingSphere(); const ws=new T.Vector3(); o.getWorldScale(ws); const r=o.geometry.boundingSphere.radius*Math.max(ws.x,ws.y,ws.z);
-      if(r>.45&&r<90) occl.push(o); }); }
+      let tr=false; for(let p=o;p;p=p.parent) if(/Tree|Bush/.test(p.name||'')) tr=true; if(!tr&&r>.9&&r<90) occl.push(o); }); }
   _hd.set(player.pos.x,player.pos.y+1.5,player.pos.z); _dir.subVectors(v,_hd); const L=_dir.length(); if(L<.01) return; _dir.divideScalar(L);
-  if(--occT<=0){ occT=2; _rc.set(_hd,_dir); _rc.far=L; _rc.near=.2; const h=_rc.intersectObjects(occl,false)[0]; occK=h?Math.max(.15,(h.distance-.3)/L):Math.min(1,occK+.08); }
+  if(--occT<=0){ occT=2; _rc.set(_hd,_dir); _rc.far=L; _rc.near=.2; const h=_rc.intersectObjects(occl,false)[0]; occTgt=h?Math.max(.3,(h.distance-.35)/L):1; }
+  occK+=(occTgt-occK)*(occTgt<occK?.18:.03);
   v.copy(_hd).addScaledVector(_dir,L*occK); }
 
 const clock = new T.Clock(), v3 = new T.Vector3(), camPos = new T.Vector3(0,6,-30), look = new T.Vector3(0,2,10);
@@ -940,7 +941,7 @@ function tick(){ const dt=Math.min(.05,clock.getDelta()), t=clock.elapsedTime;
   const can=(x,z)=>{ const g=groundAt(x,z); return g===null?air0:g<=player.pos.y+.65; };
   let mx=0, mz=0; if(!paused){ mx=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0)+joy.x; mz=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0)-joy.y; }
   const ml=Math.hypot(mx,mz), running=keys.ShiftLeft||keys.ShiftRight||Math.hypot(joy.x,joy.y)>.92; let spd=0;
-  if(Math.abs(mx)>.15) player.yaw-=mx*2.6*dt; if(Math.abs(mz)>.15){ const n=Math.min(1,Math.abs(mz)); spd=(mz>0?(running?4.8:2.5):2.5*.6)*n; const sg=Math.sign(mz), dx=Math.sin(player.yaw)*sg, dz=Math.cos(player.yaw)*sg;
+  joyMode=!fp&&!paused&&Math.hypot(joy.x,joy.y)>.15; if(joyMode){ const fw=-joy.y, rt=joy.x, cs=Math.cos(camYaw), sn=Math.sin(camYaw); let wx=-sn*fw+cs*rt, wz=-cs*fw-sn*rt; const wl=Math.hypot(wx,wz)||1; wx/=wl; wz/=wl; let d=Math.atan2(wx,wz)-player.yaw; d=Math.atan2(Math.sin(d),Math.cos(d)); player.yaw+=d*Math.min(1,dt*10); } else if(Math.abs(mx)>.15) player.yaw-=mx*2.6*dt; if(joyMode||Math.abs(mz)>.15){ const n=joyMode?Math.min(1,Math.hypot(joy.x,joy.y)):Math.min(1,Math.abs(mz)); spd=((joyMode||mz>0)?(running?4.8:2.5):2.5*.6)*n; const sg=joyMode?1:Math.sign(mz), dx=Math.sin(player.yaw)*sg, dz=Math.cos(player.yaw)*sg;
     const nx=player.pos.x+dx*spd*dt, nz=player.pos.z+dz*spd*dt; if(can(nx,nz)){ player.pos.x=nx; player.pos.z=nz; } else if(can(nx,player.pos.z)) player.pos.x=nx; else if(can(player.pos.x,nz)) player.pos.z=nz;  }
   for(const c of colliders){ const dx=player.pos.x-c.x, dz=player.pos.z-c.z, d=Math.hypot(dx,dz), r=c.r+.3; if(d<r&&d>1e-4){ player.pos.x=c.x+dx/d*r; player.pos.z=c.z+dz/d*r; } } boxPush(dt,!paused&&(Math.abs(mx)>.15||Math.abs(mz)>.15));
   player.pos.x=Math.max(-46,Math.min(46,player.pos.x)); player.pos.z=Math.max(-76,Math.min(128,player.pos.z));
@@ -968,7 +969,7 @@ function tick(){ const dt=Math.min(.05,clock.getDelta()), t=clock.elapsedTime;
     mks.forEach((m,i)=>{ v3.copy(inspPts[i]); fracFace.localToWorld(v3); v3.project(camera); m.hidden=!m.dataset.on; m.style.left=((v3.x+1)/2*innerWidth)+'px'; m.style.top=((1-v3.y)/2*innerHeight)+'px'; }); }
   else if(started&&fp){ const fpp=Math.max(-.9,Math.min(.6,(.2-camPitch)*1.4)), sy=Math.sin(player.yaw), cy=Math.cos(player.yaw);
     camPos.set(player.pos.x+sy*.18, player.pos.y+1.62, player.pos.z+cy*.18); look.set(camPos.x+sy*Math.cos(fpp)*4, camPos.y+Math.sin(fpp)*4, camPos.z+cy*Math.cos(fpp)*4); player.g.visible=false; }
-  else if(started){ if(!player.g.visible) player.g.visible=true; if(!paused&&performance.now()-lastDrag>1400&&(Math.abs(mx)>.15||Math.abs(mz)>.15)){ let d=(player.yaw+Math.PI)-camYaw; d=Math.atan2(Math.sin(d),Math.cos(d)); camYaw+=d*Math.min(1,dt*(Math.abs(mz)>.15?3.2:5)); } const cp=Math.cos(camPitch); v3.set(player.pos.x+Math.sin(camYaw)*cp*camDist, player.pos.y+1.7+Math.sin(camPitch)*camDist, player.pos.z+Math.cos(camYaw)*cp*camDist);
+  else if(started){ if(!player.g.visible) player.g.visible=true; if(!paused&&performance.now()-lastDrag>1400&&(Math.abs(mx)>.15||Math.abs(mz)>.15)){ let d=(player.yaw+Math.PI)-camYaw; d=Math.atan2(Math.sin(d),Math.cos(d)); camYaw+=d*Math.min(1,dt*(joyMode?1.1*Math.max(0,-joy.y):(Math.abs(mz)>.15?3.2:5))); } const cp=Math.cos(camPitch); v3.set(player.pos.x+Math.sin(camYaw)*cp*camDist, player.pos.y+1.7+Math.sin(camPitch)*camDist, player.pos.z+Math.cos(camYaw)*cp*camDist);
     { const hx=player.pos.x, hy=player.pos.y+1.6, hz=player.pos.z; for(let f=.15;f<=1.001;f+=.05){ const x=hx+(v3.x-hx)*f, y=hy+(v3.y-hy)*f, z=hz+(v3.z-hz)*f, g=groundAt(x,z); if(g!==null&&g>y-.35){ const k=Math.max(.12,f-.08); v3.set(hx+(v3.x-hx)*k, hy+(v3.y-hy)*k, hz+(v3.z-hz)*k); break; } } }
     v3.y=Math.max(v3.y, gh(v3.x,v3.z)+.5); occlude(v3); camPos.lerp(v3,1-Math.pow(.0005,dt)); look.lerp(v3.set(player.pos.x+Math.sin(player.yaw)*1.6,player.pos.y+1.5,player.pos.z+Math.cos(player.yaw)*1.6),1-Math.pow(.00005,dt)); }
   else { const a=t*.05+.9; camPos.set(Math.sin(a)*58,24+Math.sin(t*.2)*2,52+Math.cos(a)*72); look.set(0,12,58); }

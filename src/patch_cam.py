@@ -14,15 +14,16 @@ _rep("camPos.lerp(v3,1-Math.pow(.0005,dt));","occlude(v3); camPos.lerp(v3,1-Math
 _rep("look.lerp(v3.set(player.pos.x,player.pos.y+1.55,player.pos.z)","look.lerp(v3.set(player.pos.x+Math.sin(player.yaw)*1.6,player.pos.y+1.5,player.pos.z+Math.cos(player.yaw)*1.6)")
 OCC=r'''
 /* 카메라 가림 방지: 머리에서 카메라까지 사이에 물체가 있으면 그 앞으로 당긴다 */
-const _rc=new T.Raycaster(), _hd=new T.Vector3(), _dir=new T.Vector3(); let occl=null, occT=0, occK=1;
+const _rc=new T.Raycaster(), _hd=new T.Vector3(), _dir=new T.Vector3(); let occl=null, occT=0, occK=1, occTgt=1;
 function occlude(v){
   if(!occl){ occl=[]; const skip=new Set([player.g]); try{ for(const c of npcs) skip.add(c.g); }catch(e){}
     scene.traverse(o=>{ if(!o.isMesh||o.isInstancedMesh||!o.geometry) return; const m=o.material; if(!m||m.transparent||m.side===T.BackSide) return;
       for(let p=o;p;p=p.parent) if(skip.has(p)) return;
       if(!o.geometry.boundingSphere) o.geometry.computeBoundingSphere(); const ws=new T.Vector3(); o.getWorldScale(ws); const r=o.geometry.boundingSphere.radius*Math.max(ws.x,ws.y,ws.z);
-      if(r>.45&&r<90) occl.push(o); }); }
+      let tr=false; for(let p=o;p;p=p.parent) if(/Tree|Bush/.test(p.name||'')) tr=true; if(!tr&&r>.9&&r<90) occl.push(o); }); }
   _hd.set(player.pos.x,player.pos.y+1.5,player.pos.z); _dir.subVectors(v,_hd); const L=_dir.length(); if(L<.01) return; _dir.divideScalar(L);
-  if(--occT<=0){ occT=2; _rc.set(_hd,_dir); _rc.far=L; _rc.near=.2; const h=_rc.intersectObjects(occl,false)[0]; occK=h?Math.max(.15,(h.distance-.3)/L):Math.min(1,occK+.08); }
+  if(--occT<=0){ occT=2; _rc.set(_hd,_dir); _rc.far=L; _rc.near=.2; const h=_rc.intersectObjects(occl,false)[0]; occTgt=h?Math.max(.3,(h.distance-.35)/L):1; }
+  occK+=(occTgt-occK)*(occTgt<occK?.18:.03);
   v.copy(_hd).addScaledVector(_dir,L*occK); }
 '''
 _rep("/* ================= 루프 ================= */","/* ================= 루프 ================= */"+OCC)

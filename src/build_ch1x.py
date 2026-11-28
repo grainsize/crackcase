@@ -101,5 +101,6 @@ for bad in ['ACTS','BUDGET','showAct(','done.has(','left -=']:
     assert bad not in s, bad
 exec(open('/home/claude/patch_cam.py',encoding='utf-8').read())
 exec(open('/home/claude/patch_play.py',encoding='utf-8').read())
+exec(open('/home/claude/patch_mobile.py',encoding='utf-8').read())
 open('/home/claude/season/ch1.html','w',encoding='utf-8').write(s)
 print('ok',len(s))
