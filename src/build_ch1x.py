@@ -102,5 +102,7 @@ for bad in ['ACTS','BUDGET','showAct(','done.has(','left -=']:
 exec(open('/home/claude/patch_cam.py',encoding='utf-8').read())
 exec(open('/home/claude/patch_play.py',encoding='utf-8').read())
 exec(open('/home/claude/patch_mobile.py',encoding='utf-8').read())
+NAV_B=(-30,30,-90,90)
+exec(open('/home/claude/patch_tap.py',encoding='utf-8').read())
 open('/home/claude/season/ch1.html','w',encoding='utf-8').write(s)
 print('ok',len(s))
